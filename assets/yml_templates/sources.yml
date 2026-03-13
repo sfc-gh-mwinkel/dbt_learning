@@ -1,0 +1,40 @@
+version: 2
+
+sources:
+  - name: raw
+    description: "Raw seed data loaded via dbt seed"
+    schema: "{{ target.schema }}_raw"
+    freshness:
+      warn_after:
+        count: 24
+        period: hour
+      error_after:
+        count: 48
+        period: hour
+    loaded_at_field: _etl_loaded_at
+    tables:
+      - name: customers
+        description: "Raw customer records"
+        freshness: null
+        columns:
+          - name: customer_id
+            tests:
+              - not_null
+              - unique
+      - name: orders
+        description: "Raw order records"
+        freshness: null
+        columns:
+          - name: order_id
+            tests:
+              - not_null
+              - unique
+      - name: products
+        description: "Raw product catalog"
+        freshness: null
+      - name: order_items
+        description: "Raw line items on orders"
+        freshness: null
+      - name: payments
+        description: "Raw payment transactions"
+        freshness: null

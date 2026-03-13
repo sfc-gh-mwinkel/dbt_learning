@@ -1,0 +1,31 @@
+version: 2
+
+models:
+  - name: dim_customers
+    description: "Customer dimension with lifetime value and tier classification"
+    columns:
+      - name: customer_id
+        description: "Primary key"
+        tests:
+          - not_null
+          - unique
+      - name: customer_tier
+        description: "Customer value tier: gold, silver, or bronze"
+        tests:
+          - accepted_values:
+              values: ['gold', 'silver', 'bronze']
+
+  - name: fct_orders
+    description: "Order fact table with payment and line item details"
+    columns:
+      - name: order_id
+        description: "Primary key"
+        tests:
+          - not_null
+          - unique
+      - name: customer_id
+        description: "Foreign key to dim_customers"
+        tests:
+          - relationships:
+              to: ref('dim_customers')
+              field: customer_id

@@ -1,0 +1,29 @@
+dbt_learning:
+  target: dev
+  outputs:
+    dev:
+      type: snowflake
+      account: YOUR_ACCOUNT        # e.g. abc12345.us-east-1
+      
+      # CRITICAL: Use your actual name in one of these formats:
+      #   - Okta/SSO email: john.doe@company.com
+      #   - Snowflake username: john.doe
+      #   - First.Last format: jane.smith
+      # This is used to generate your unique schema prefix (e.g., JDOE_STAGING)
+      user: YOUR_EMAIL             # Example: john.doe@company.com
+      
+      authenticator: externalbrowser
+      role: YOUR_ROLE
+      
+      # PRODUCTION DATABASE: All users share this database
+      # Each user gets their own schemas within this database
+      database: SANDBOX_DBT_TRAINING
+      
+      warehouse: YOUR_WAREHOUSE
+      
+      # DEFAULT SCHEMA: Used only for models without custom schema config
+      # With generate_schema_name macro, this becomes: <USER_PREFIX>_PUBLIC
+      # Example: john.doe → JDOE_PUBLIC
+      schema: public
+      
+      threads: 4
