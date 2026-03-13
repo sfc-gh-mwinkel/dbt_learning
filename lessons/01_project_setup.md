@@ -116,7 +116,7 @@ version: 2
 sources:
   - name: raw                              # Logical name you'll use in source() calls
     description: "Raw seed data loaded via dbt seed"
-    schema: "{{ target.schema }}_raw"      # Points to the actual Snowflake schema where seeds land
+    schema: "{{ generate_schema_name('raw') }}"      # Points to your user-specific raw schema (e.g., JDOE_RAW)
     tables:
       - name: customers                    # Must match the actual table name in Snowflake
         description: "Raw customer records"
@@ -125,6 +125,8 @@ sources:
 ```
 
 > **Key concept:** The `source()` function in dbt points to tables that exist outside of your dbt project. It enables lineage tracking, freshness checks, and documentation.
+> 
+> **Note:** We use `{{ generate_schema_name('raw') }}` to ensure the source points to your user-specific raw schema (e.g., `MWINKEL_RAW`). This matches how the generate_schema_name macro creates schemas for seeds.
 
 ---
 

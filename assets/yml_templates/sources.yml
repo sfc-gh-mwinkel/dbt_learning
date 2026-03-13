@@ -3,7 +3,7 @@ version: 2
 sources:
   - name: raw
     description: "Raw seed data loaded via dbt seed"
-    schema: "{{ target.schema }}_raw"
+    schema: "{{ generate_schema_name('raw') }}"
     freshness:
       warn_after:
         count: 24
