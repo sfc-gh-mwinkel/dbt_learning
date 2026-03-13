@@ -14,18 +14,29 @@ clean-targets:
   - "target"
   - "dbt_packages"
 
+vars:
+  high_value_threshold: 300
+  mid_value_threshold: 100
+
 models:
   dbt_learning:
     staging:
       +materialized: view
       +schema: staging
+      +tags: ["staging"]
     intermediate:
       +materialized: view
       +schema: intermediate
+      +tags: ["intermediate"]
     marts:
       +materialized: table
       +schema: marts
+      +tags: ["marts"]
 
 seeds:
   dbt_learning:
     +schema: raw
+
+snapshots:
+  dbt_learning:
+    +tags: ["snapshot"]
