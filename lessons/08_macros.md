@@ -318,4 +318,13 @@ dbt provides several built-in macros and context variables:
 
 ---
 
+## Further Reading
+
+- [Jinja and macros](https://docs.getdbt.com/docs/build/jinja-macros) - Complete Jinja guide for dbt
+- [Writing macros](https://docs.getdbt.com/best-practices/writing-custom-generic-tests) - Macro best practices
+- [dbt Jinja functions](https://docs.getdbt.com/reference/dbt-jinja-functions) - All built-in Jinja functions
+- [Custom schema names](https://docs.getdbt.com/docs/build/custom-schemas) - Understanding generate_schema_name
+
+---
+
 **Previous:** [Lesson 7 - Snapshots & SCD Type 2](07_snapshots.md) | **Next:** [Lesson 9 - Documentation & dbt docs](09_documentation.md)

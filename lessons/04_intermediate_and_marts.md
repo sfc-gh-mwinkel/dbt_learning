@@ -505,4 +505,13 @@ Done. PASS=1 WARN=0 ERROR=0 SKIP=0 TOTAL=1
 
 ---
 
+## Further Reading
+
+- [Intermediate models](https://docs.getdbt.com/best-practices/how-we-structure/3-intermediate) - Best practices for intermediate layer
+- [Marts models](https://docs.getdbt.com/best-practices/how-we-structure/4-marts) - Best practices for marts layer
+- [Incremental models](https://docs.getdbt.com/docs/build/incremental-models) - Complete incremental strategy guide
+- [Configuring incremental models](https://docs.getdbt.com/docs/build/incremental-strategy) - Merge, append, and delete+insert strategies
+
+---
+
 **Previous:** [Lesson 3 - The Staging Layer](03_staging_layer.md) | **Next:** [Lesson 5 - Testing & Data Quality](05_testing.md)

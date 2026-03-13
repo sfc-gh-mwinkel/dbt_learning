@@ -212,4 +212,14 @@ This previews the first rows of your model without leaving the terminal.
 
 ---
 
+## Further Reading
+
+- [What is dbt?](https://docs.getdbt.com/docs/introduction) - Official introduction to dbt
+- [About dbt projects](https://docs.getdbt.com/docs/build/projects) - Project structure and configuration
+- [Sources](https://docs.getdbt.com/docs/build/sources) - Declaring and using sources
+- [dbt seed](https://docs.getdbt.com/reference/commands/seed) - Loading CSV files
+- [Connection profiles](https://docs.getdbt.com/docs/core/connect-data-platform/connection-profiles) - Configuring profiles.yml
+
+---
+
 **Next:** [Lesson 2 - Understanding YML Files](02_yml_files.md)

@@ -410,6 +410,15 @@ alter table fct_orders drop constraint fct_orders_customer_fk;
 
 ---
 
+## Further Reading
+
+- [dbt_constraints package](https://hub.getdbt.com/Snowflake-Labs/dbt_constraints/latest/) - Official package documentation
+- [Snowflake constraints](https://docs.snowflake.com/en/sql-reference/constraints-overview) - How constraints work in Snowflake
+- [Primary keys in dbt](https://docs.getdbt.com/terms/primary-key) - Understanding primary keys
+- [dbt packages](https://docs.getdbt.com/docs/build/packages) - Installing and using packages
+
+---
+
 **Congratulations!** You now understand how to implement enterprise-grade data quality with database-enforced constraints. This is essential for production data platforms where data integrity must be guaranteed across all access patterns.
 
 ---

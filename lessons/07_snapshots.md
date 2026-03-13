@@ -258,4 +258,13 @@ Step 4: Query the snapshot table. Order 1009 should now have two rows:
 
 ---
 
+## Further Reading
+
+- [Snapshots](https://docs.getdbt.com/docs/build/snapshots) - Complete snapshot documentation
+- [Snapshot configurations](https://docs.getdbt.com/reference/snapshot-configs) - All snapshot config options
+- [Snapshot meta-fields](https://docs.getdbt.com/reference/resource-configs/snapshot_meta_fields) - Understanding dbt_valid_from, dbt_valid_to
+- [SCD Type 2](https://docs.getdbt.com/terms/scd) - Slowly changing dimensions explained
+
+---
+
 **Previous:** [Lesson 6 - dbt_project.yml Deep Dive](06_dbt_project_yml.md) | **Next:** [Lesson 8 - Writing Macros](08_macros.md)

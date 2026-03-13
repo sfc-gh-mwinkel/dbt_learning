@@ -244,6 +244,15 @@ dbt docs generate
 
 ---
 
+## Further Reading
+
+- [Node selection syntax](https://docs.getdbt.com/reference/node-selection/syntax) - Complete selection syntax guide
+- [Graph operators](https://docs.getdbt.com/reference/node-selection/graph-operators) - +, @, and other operators
+- [dbt build](https://docs.getdbt.com/reference/commands/build) - Combined run and test command
+- [YAML selectors](https://docs.getdbt.com/reference/node-selection/yaml-selectors) - Reusable selector definitions
+
+---
+
 ## What's Next?
 
 You've completed the core dbt curriculum! Continue to **Lesson 11** to learn about enterprise data quality with database-enforced constraints, and **Lesson 12** for production patterns like advanced incremental strategies and exposures.

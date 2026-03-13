@@ -581,4 +581,14 @@ Congratulations! You've completed the dbt Learning Platform. You now have the sk
 - Experiment with Python models for ML workflows
 - Set up CI/CD with GitHub Actions or similar
 
+---
+
+## Further Reading
+
+- [Incremental models](https://docs.getdbt.com/docs/build/incremental-models) - Complete incremental guide
+- [Incremental strategies](https://docs.getdbt.com/docs/build/incremental-strategy) - Merge, append, delete+insert
+- [Target variables](https://docs.getdbt.com/reference/dbt-jinja-functions/target) - Using target.name for environments
+- [Exposures](https://docs.getdbt.com/docs/build/exposures) - Documenting downstream dependencies
+- [Source freshness](https://docs.getdbt.com/docs/build/sources#snapshotting-source-data-freshness) - Freshness monitoring
+
 Happy modeling! 🎉

@@ -241,4 +241,13 @@ This approach:
 
 ---
 
+## Further Reading
+
+- [Add data tests to your DAG](https://docs.getdbt.com/docs/build/data-tests) - Complete guide to dbt testing
+- [Test configurations](https://docs.getdbt.com/reference/test-configs) - All test configuration options
+- [Sources](https://docs.getdbt.com/docs/build/sources) - Source properties and configurations
+- [Model properties](https://docs.getdbt.com/reference/model-properties) - All available model YAML properties
+
+---
+
 **Previous:** [Lesson 1 - Project Setup](01_project_setup.md) | **Next:** [Lesson 3 - The Staging Layer](03_staging_layer.md)

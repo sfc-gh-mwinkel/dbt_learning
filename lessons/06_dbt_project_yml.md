@@ -384,4 +384,13 @@ snapshots:
 
 ---
 
+## Further Reading
+
+- [About dbt_project.yml](https://docs.getdbt.com/reference/dbt_project.yml) - Complete reference for dbt_project.yml
+- [Model configurations](https://docs.getdbt.com/reference/model-configs) - All available model configs
+- [Project variables](https://docs.getdbt.com/docs/build/project-variables) - Using vars in your project
+- [Hooks](https://docs.getdbt.com/docs/build/hooks-operations) - Pre and post hooks explained
+
+---
+
 **Previous:** [Lesson 5 - Testing & Data Quality](05_testing.md) | **Next:** [Lesson 7 - Snapshots & SCD Type 2](07_snapshots.md)

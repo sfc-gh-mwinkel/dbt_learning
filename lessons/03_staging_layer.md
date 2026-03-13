@@ -330,4 +330,13 @@ Right now all staging models depend only on sources. In the next lesson, you'll 
 
 ---
 
+## Further Reading
+
+- [How we structure our dbt projects](https://docs.getdbt.com/best-practices/how-we-structure/1-guide-overview) - dbt Labs' official project structure guide
+- [Staging models](https://docs.getdbt.com/best-practices/how-we-structure/2-staging) - Best practices for staging layer
+- [The ref function](https://docs.getdbt.com/reference/dbt-jinja-functions/ref) - Complete ref() documentation
+- [Materializations](https://docs.getdbt.com/docs/build/materializations) - All materialization types explained
+
+---
+
 **Previous:** [Lesson 2 - YML Files](02_yml_files.md) | **Next:** [Lesson 4 - Intermediate & Mart Models](04_intermediate_and_marts.md)

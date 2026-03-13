@@ -191,4 +191,13 @@ sources:
 
 ---
 
+## Further Reading
+
+- [Documentation](https://docs.getdbt.com/docs/build/documentation) - Complete documentation guide
+- [Doc blocks](https://docs.getdbt.com/docs/build/documentation#using-docs-blocks) - Creating reusable doc blocks
+- [dbt docs commands](https://docs.getdbt.com/reference/commands/cmd-docs) - Generate and serve commands
+- [Source freshness](https://docs.getdbt.com/docs/build/sources#snapshotting-source-data-freshness) - Monitoring data freshness
+
+---
+
 **Previous:** [Lesson 8 - Writing Macros](08_macros.md) | **Next:** [Lesson 10 - Graph Operators & dbt build](10_graph_operators.md)

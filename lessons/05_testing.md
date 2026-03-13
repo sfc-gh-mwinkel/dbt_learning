@@ -464,4 +464,13 @@ dbt test --select tag:marts       # Tests on tagged models (tags covered in Less
 
 ---
 
+## Further Reading
+
+- [Add data tests to your DAG](https://docs.getdbt.com/docs/build/data-tests) - Complete testing guide
+- [dbt_utils package](https://hub.getdbt.com/dbt-labs/dbt_utils/latest/) - Official dbt_utils documentation
+- [Test configurations](https://docs.getdbt.com/reference/test-configs) - Severity, tags, and other test options
+- [Custom generic tests](https://docs.getdbt.com/best-practices/writing-custom-generic-tests) - Writing reusable test macros
+
+---
+
 **Previous:** [Lesson 4 - Intermediate & Mart Models](04_intermediate_and_marts.md) | **Next:** [Lesson 6 - dbt_project.yml Deep Dive](06_dbt_project_yml.md)
