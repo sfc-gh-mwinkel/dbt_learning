@@ -11,6 +11,18 @@ By the end of this lesson you will be able to:
 
 ---
 
+## Prerequisites
+
+- **Completed:** Lessons 1-7
+- **Recommended:** Read through earlier lessons to see Jinja syntax you've already used (`{{ ref() }}`, `{{ source() }}`, `{{ config() }}`)
+
+**Catch up:** If you're missing prerequisites, run:
+```bash
+./scripts/catch_up.sh 8
+```
+
+---
+
 ## 8.1 What is Jinja?
 
 dbt uses **Jinja2** as its templating language. Everything between `{{ }}`, `{% %}`, or `{# #}` is Jinja:

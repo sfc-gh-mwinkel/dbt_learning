@@ -1,4 +1,4 @@
-# Lesson 12: Enterprise Data Quality with dbt_constraints
+# Lesson 11: Enterprise Data Quality with dbt_constraints
 
 ## Learning Objectives
 
@@ -11,25 +11,38 @@ By the end of this lesson you will be able to:
 
 ---
 
-## 12.1 Why dbt_constraints?
+## Prerequisites
 
-Standard dbt tests (`not_null`, `unique`, `relationships`) only validate data **during `dbt test` runs**. They don't prevent bad data from entering through other channels (manual inserts, other ETL tools, etc.).
+- **Completed:** Lessons 1-10
+- **Models exist:** `dim_customers`, `fct_orders` in marts
 
-**dbt_constraints** creates actual database constraints in Snowflake that are enforced **24/7**:
-
-| Feature | Standard dbt Tests | dbt_constraints |
-|---------|-------------------|-----------------|
-| Validation timing | Only during `dbt test` | Always (database-enforced) |
-| Performance | No optimization | Query optimizer uses constraints |
-| BI tool visibility | Not visible | Visible in metadata |
-| Prevents bad data from all sources | ❌ No | ✅ Yes |
-| Documentation | In dbt only | In database + dbt |
-
-> **Key concept**: Database constraints protect your data 24/7, not just when dbt runs. They're essential for production systems.
+**Catch up:** If you're missing prerequisites, run:
+```bash
+./scripts/catch_up.sh 11
+```
 
 ---
 
-## 12.2 Installation
+## 11.1 Why dbt_constraints?
+
+Standard dbt tests (`not_null`, `unique`, `relationships`) only validate data **during `dbt test` runs**. They don't prevent bad data from entering through other channels (manual inserts, other ETL tools, etc.).
+
+**dbt_constraints** creates actual database constraints in Snowflake AND validates data during tests:
+
+| Feature | Standard dbt Tests | dbt_constraints |
+|---------|-------------------|-----------------|
+| Validation timing | Only during `dbt test` | During `dbt test` (validates data) |
+| Constraint metadata | Not created | Created in Snowflake |
+| Query optimization | No | Yes (optimizer uses constraints) |
+| BI tool visibility | Not visible | Visible in metadata |
+| Snowflake enforcement | N/A | Not enforced at write (metadata only) |
+| Documentation | In dbt only | In database + dbt |
+
+> **Key concept**: Database constraints document data relationships in metadata and can help query optimizers. In Snowflake specifically, constraints are **not enforced by default** at write time — they serve as metadata documentation. However, the `dbt_constraints` package validates data during `dbt test` runs AND creates the constraint metadata, giving you the best of both worlds.
+
+---
+
+## 11.2 Installation
 
 Add to your `packages.yml`:
 
@@ -52,7 +65,7 @@ dbt deps
 
 ---
 
-## 12.3 Primary Key Constraints
+## 11.3 Primary Key Constraints
 
 Every dimension table must have a primary key. This guarantees uniqueness and enables foreign key relationships.
 
@@ -107,7 +120,7 @@ models:
 
 ---
 
-## 12.4 Foreign Key Constraints
+## 11.4 Foreign Key Constraints
 
 Foreign keys ensure referential integrity between tables. Every value in a foreign key column must exist in the referenced table's primary key.
 
@@ -164,7 +177,7 @@ With foreign key constraints:
 
 ---
 
-## 12.5 Unique Constraints
+## 11.5 Unique Constraints
 
 Use unique constraints for business keys that aren't primary keys but must be unique (e.g., email addresses, order numbers).
 
@@ -178,7 +191,7 @@ columns:
 
 ---
 
-## 12.6 Complete Example: Enterprise-Grade Marts
+## 11.6 Complete Example: Enterprise-Grade Marts
 
 Here's how your mart `.yml` files should look with full constraint enforcement:
 
@@ -247,7 +260,7 @@ models:
 
 ---
 
-## 12.7 Verification
+## 11.7 Verification
 
 After running tests, verify constraints were created in Snowflake:
 
@@ -281,7 +294,7 @@ FCT_ORDERS      | fct_orders_customer_fk    | FOREIGN KEY
 
 ---
 
-## 12.8 When to Use dbt_constraints
+## 11.8 When to Use dbt_constraints
 
 | Use Case | Use dbt_constraints? | Why |
 |----------|---------------------|-----|
@@ -298,22 +311,23 @@ FCT_ORDERS      | fct_orders_customer_fk    | FOREIGN KEY
 
 ---
 
-## 12.9 Performance Considerations
+## 11.9 Performance Considerations
 
 **Benefits**:
 - Query optimizer uses constraints for better execution plans
 - Join elimination when referencing unique keys
-- Faster queries overall
+- BI tools can discover relationships from metadata
+- Documentation visible in Snowflake UI and information_schema
 
-**Drawbacks**:
-- Constraint validation adds overhead to `INSERT/UPDATE/DELETE`
-- First-time enforcement requires full table scan
-
-**Best practice**: Enable constraints in production, use standard tests in development.
+**Important Snowflake Behavior**:
+- Snowflake constraints are **NOT enforced** at write time by default
+- They serve as **metadata documentation** for query optimization and BI tools
+- The `dbt_constraints` package validates data during `dbt test`, ensuring data integrity
+- This gives you: validation at dbt runtime + metadata benefits in Snowflake
 
 ---
 
-## 12.10 Exercises
+## 11.10 Exercises
 
 1. **Add dbt_constraints package**:
    ```bash
@@ -352,7 +366,7 @@ FCT_ORDERS      | fct_orders_customer_fk    | FOREIGN KEY
 
 ---
 
-## 12.11 Troubleshooting
+## 11.11 Troubleshooting
 
 ### Constraint Creation Fails
 
@@ -382,17 +396,17 @@ alter table fct_orders drop constraint fct_orders_customer_fk;
 
 ---
 
-## 12.12 Key Takeaways
+## 11.12 Key Takeaways
 
 | Concept | What You Learned |
 |---------|------------------|
-| dbt_constraints | Creates database-level constraints, not just dbt tests |
+| dbt_constraints | Creates database-level constraint metadata + validates during dbt test |
 | Primary keys | Guarantee uniqueness, enable foreign key relationships |
 | Foreign keys | Enforce referential integrity between tables |
 | Unique constraints | Business keys that must be unique |
 | When to use | Production marts, gold layer models |
 | Verification | Use `SHOW` commands to verify constraints |
-| Performance | Query optimizer benefits, slight write overhead |
+| Performance | Query optimizer benefits, BI tool discovery |
 
 ---
 

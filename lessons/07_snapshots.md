@@ -11,6 +11,19 @@ By the end of this lesson you will be able to:
 
 ---
 
+## Prerequisites
+
+- **Completed:** Lessons 1-6
+- **Models exist:** All staging models, particularly `stg_orders`
+- **Seeds loaded:** `orders.csv` in `seeds/`
+
+**Catch up:** If you're missing prerequisites, run:
+```bash
+./scripts/catch_up.sh 7
+```
+
+---
+
 ## 7.1 The Problem: Data Changes
 
 Consider an order with status `pending`. Tomorrow it becomes `shipped`. Next week, `completed`. If you only have a staging model, you see the _current_ status. The history is lost.
@@ -40,6 +53,8 @@ dbt supports two strategies for detecting changes:
 ### Check Strategy
 
 Monitors specific columns for changes. If any watched column changes, a new snapshot row is created.
+
+> **Note:** Snapshots use a special Jinja block syntax (`{% snapshot %}...{% endsnapshot %}`). This is different from the `{{ }}` expressions you've seen before. The `{% %}` syntax executes statements rather than outputting values. Jinja is covered in depth in Lesson 8 — for now, follow the pattern shown below.
 
 ```sql
 -- {% snapshot %} block: snapshots use a special Jinja block (not a standard model).

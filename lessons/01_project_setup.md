@@ -11,12 +11,16 @@ By the end of this lesson you will be able to:
 
 ---
 
-## 1.1 Prerequisites
+## Prerequisites
 
-Before starting, ensure you have:
 - **dbt-core** and **dbt-snowflake** installed (`pip install dbt-core dbt-snowflake`)
 - A Snowflake account with a database, warehouse, and role you can use
 - This repository cloned locally
+
+**Catch up:** If you need the seed files copied:
+```bash
+./scripts/catch_up.sh 1
+```
 
 Verify your install:
 
@@ -26,7 +30,7 @@ dbt --version
 
 ---
 
-## 1.2 Configure Your Connection
+## 1.1 Configure Your Connection
 
 Copy the example profile and edit it with your Snowflake credentials:
 
@@ -70,7 +74,7 @@ You should see "All checks passed!" at the end of the output.
 
 ---
 
-## 1.3 Load Seed Data
+## 1.2 Load Seed Data
 
 Seeds are CSV files that dbt loads directly into your warehouse. Copy the seed files from the assets folder:
 
@@ -100,7 +104,7 @@ This creates two tables in your Snowflake schema (suffixed `_raw` per our projec
 
 ---
 
-## 1.4 Define Your Source
+## 1.3 Define Your Source
 
 Before writing models, tell dbt where the raw data lives. Create a source definition:
 
@@ -126,11 +130,11 @@ sources:
 
 > **Key concept:** The `source()` function in dbt points to tables that exist outside of your dbt project. It enables lineage tracking, freshness checks, and documentation.
 > 
-> **Note:** We use `{{ generate_schema_name('raw') }}` to ensure the source points to your user-specific raw schema (e.g., `MWINKEL_RAW`). This matches how the generate_schema_name macro creates schemas for seeds.
+> **Note:** We use `{{ generate_schema_name('raw') }}` to ensure the source points to your user-specific raw schema (e.g., `MWINKEL_RAW`). This matches how the generate_schema_name macro creates schemas for seeds. The macro itself is explained in detail in Lesson 8 — for now, just know it creates user-specific schemas like `JDOE_RAW` based on your Snowflake username.
 
 ---
 
-## 1.5 Write Your First Staging Model
+## 1.4 Write Your First Staging Model
 
 Create `models/staging/stg_customers.sql`:
 
@@ -172,7 +176,7 @@ dbt run --select stg_customers
 
 ---
 
-## 1.6 Verify Your Work
+## 1.5 Verify Your Work
 
 Check that the model was created in Snowflake. You can run:
 
@@ -184,7 +188,7 @@ This previews the first rows of your model without leaving the terminal.
 
 ---
 
-## 1.7 Exercises
+## 1.6 Exercises
 
 1. Copy `assets/seeds/products.csv` into `seeds/` and run `dbt seed` again
 2. Add a `products` table entry to your `sources.yml`
@@ -193,7 +197,7 @@ This previews the first rows of your model without leaving the terminal.
 
 ---
 
-## 1.8 Key Takeaways
+## 1.7 Key Takeaways
 
 | Concept | What You Learned |
 |---------|-----------------|

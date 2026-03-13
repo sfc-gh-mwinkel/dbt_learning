@@ -98,6 +98,7 @@ dbt deps
 
 | # | Lesson | Topics | Key Commands |
 |---|--------|--------|-------------|
+| 📖 | [Glossary](lessons/00_glossary.md) | Quick reference for dbt terms | — |
 | 1 | [Project Setup & First Model](lessons/01_project_setup.md) | profiles.yml, dbt seed, sources, first staging model | `dbt debug`, `dbt seed`, `dbt run` |
 | 2 | [Understanding YML Files](lessons/02_yml_files.md) | sources.yml, schema.yml, descriptions, basic tests | `dbt test` |
 | 3 | [The Staging Layer](lessons/03_staging_layer.md) | ref(), materialization, naming conventions | `dbt run --select`, `dbt show` |
@@ -108,8 +109,33 @@ dbt deps
 | 8 | [Writing Macros](lessons/08_macros.md) | Jinja basics, custom macros, generate_schema_name | `dbt compile` |
 | 9 | [Documentation & dbt docs](lessons/09_documentation.md) | Descriptions, doc blocks, DAG viewer, source freshness | `dbt docs generate`, `dbt docs serve` |
 | 10 | [Graph Operators & dbt build](lessons/10_graph_operators.md) | +model+, @, dbt build, --full-refresh, selectors | `dbt build`, `dbt ls --select` |
-| 11 | [Enterprise Data Quality](lessons/11_dbt_constraints.md) | dbt_constraints, primary keys, foreign keys, database enforcement | `dbt test` |
+| 11 | [Enterprise Data Quality](lessons/11_dbt_constraints.md) | dbt_constraints, primary keys, foreign keys, database metadata | `dbt test` |
 | 12 | [Production Patterns](lessons/12_production_patterns.md) | Incremental deep-dive, environment configs, source freshness, exposures | `dbt source freshness` |
+
+---
+
+## Concept Index
+
+Find where specific topics are covered:
+
+| Topic | Primary Lesson | Also Mentioned |
+|-------|----------------|----------------|
+| `ref()` function | 3 | 4, 5, 8 |
+| `source()` function | 1 | 2, 3 |
+| Jinja templating | 8 | 6, 7, 12 |
+| Testing | 5 | 2, 11 |
+| Materializations | 3, 4 | 6, 12 |
+| Incremental models | 4 | 12 |
+| `generate_schema_name` macro | 8 | 1, 6 |
+| Snapshots (SCD Type 2) | 7 | — |
+| Documentation | 9 | 2 |
+| Graph operators (`+`, `@`) | 10 | — |
+| Database constraints | 11 | — |
+| Source freshness | 12 | 9 |
+| Exposures | 12 | — |
+| Tags | 6 | 10 |
+| Variables (`vars`) | 6 | — |
+| Hooks | 6 | — |
 
 ---
 
@@ -118,6 +144,7 @@ dbt deps
 ```
 dbt_learning/
 ├── lessons/                    # Scripted lesson files (start here)
+│   ├── 00_glossary.md
 │   ├── 01_project_setup.md
 │   ├── 02_yml_files.md
 │   ├── 03_staging_layer.md

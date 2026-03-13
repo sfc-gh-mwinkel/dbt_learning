@@ -11,6 +11,19 @@ By the end of this lesson you will be able to:
 
 ---
 
+## Prerequisites
+
+- **Completed:** Lessons 1-2
+- **Models exist:** `stg_customers.sql` with basic tests
+- **Seeds loaded:** `customers.csv`, `orders.csv` in `seeds/`
+
+**Catch up:** If you're missing prerequisites, run:
+```bash
+./scripts/catch_up.sh 3
+```
+
+---
+
 ## 3.1 What Is the Staging Layer?
 
 The staging layer is the first transformation layer in your dbt project. It sits directly on top of your raw sources and has one job: **clean and standardize raw data**.
@@ -134,7 +147,7 @@ version: 2
 sources:
   - name: raw
     description: "Raw seed data loaded via dbt seed"
-    schema: "{{ target.schema }}_raw"
+    schema: "{{ generate_schema_name('raw') }}"
     tables:
       - name: customers
         description: "Raw customer records"
@@ -149,8 +162,26 @@ sources:
 ```
 
 > **Tip**: You can also copy the complete template with `cp assets/yml_templates/sources.yml models/staging/`
+>
+> **Note:** The `generate_schema_name` macro creates user-specific schemas (e.g., `JDOE_RAW`). This macro is explained in detail in Lesson 8 — for now, just use the code as shown.
 
-Then create each staging model. If you completed the Lesson 1 exercises, you already have `stg_customers` and `stg_products`. Now add the rest:
+Then create each staging model. If you completed the Lesson 1 exercises, you already have `stg_customers` and `stg_products`. If not, copy them from assets first:
+
+**Linux/macOS:**
+```bash
+# Only if you skipped the Lesson 1 exercises
+cp assets/models/staging/stg_customers.sql models/staging/
+cp assets/models/staging/stg_products.sql models/staging/
+```
+
+**Windows:**
+```powershell
+# Only if you skipped the Lesson 1 exercises
+Copy-Item assets\models\staging\stg_customers.sql models\staging\
+Copy-Item assets\models\staging\stg_products.sql models\staging\
+```
+
+Now add the remaining staging models:
 
 **`models/staging/stg_orders.sql`**
 ```sql

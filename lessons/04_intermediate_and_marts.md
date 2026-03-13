@@ -11,6 +11,20 @@ By the end of this lesson you will be able to:
 
 ---
 
+## Prerequisites
+
+- **Completed:** Lessons 1-3
+- **Models exist:** All five staging models (`stg_customers`, `stg_orders`, `stg_products`, `stg_order_items`, `stg_payments`)
+- **Seeds loaded:** All CSV files in `seeds/`
+- **Verified:** `dbt run --select staging` completes successfully
+
+**Catch up:** If you're missing prerequisites, run:
+```bash
+./scripts/catch_up.sh 4
+```
+
+---
+
 ## 4.1 The Three-Layer Architecture
 
 ```
@@ -166,32 +180,9 @@ Dimensions describe business entities (customers, products, locations). They cha
 
 **Naming:** `dim_{entity}.sql`
 
-Create `models/marts/dim_customers.sql`:
+Before creating the dimension, we need its supporting intermediate model. Let's build that first.
 
-```sql
--- Thin mart pattern: dim_customers delegates all heavy logic to the intermediate
--- layer and simply selects the final columns. This keeps marts clean, auditable,
--- and easy to extend — add a new metric in the intermediate model and it flows here.
-with customer_summary as (
-    select * from {{ ref('int_customers__order_summary') }}
-)
-
-select
-    customer_id,
-    first_name,
-    last_name,
-    email,
-    created_at,
-    is_active,
-    total_orders,
-    lifetime_value,
-    first_order_date,
-    last_order_date,
-    customer_tier
-from customer_summary
-```
-
-But wait — this references `int_customers__order_summary`, which we haven't created yet. Let's build it first.
+### Supporting Model: Customer Order Summary
 
 Create `models/intermediate/int_customers__order_summary.sql`:
 
@@ -244,6 +235,53 @@ select
     end as customer_tier
 from customers c
 left join customer_orders co on c.customer_id = co.customer_id
+```
+
+Add a YML file for the intermediate model. Create `models/intermediate/int_customers__order_summary.yml`:
+
+```yaml
+version: 2
+
+models:
+  - name: int_customers__order_summary
+    description: "Customer data enriched with order metrics and tier classification"
+    columns:
+      - name: customer_id
+        description: "Primary key for customers"
+        tests:
+          - not_null
+          - unique
+      - name: lifetime_value
+        description: "Sum of all order amounts for this customer"
+      - name: customer_tier
+        description: "Customer value tier: gold (>=$300), silver (>=$100), bronze (<$100)"
+```
+
+### The Dimension Model
+
+Now create `models/marts/dim_customers.sql`:
+
+```sql
+-- Thin mart pattern: dim_customers delegates all heavy logic to the intermediate
+-- layer and simply selects the final columns. This keeps marts clean, auditable,
+-- and easy to extend — add a new metric in the intermediate model and it flows here.
+with customer_summary as (
+    select * from {{ ref('int_customers__order_summary') }}
+)
+
+select
+    customer_id,
+    first_name,
+    last_name,
+    email,
+    created_at,
+    is_active,
+    total_orders,
+    lifetime_value,
+    first_order_date,
+    last_order_date,
+    customer_tier
+from customer_summary
 ```
 
 > **Key concept:** The mart model (`dim_customers`) is intentionally thin. All the heavy lifting — joins, aggregation, tier logic — lives in the intermediate model. This keeps marts clean and intermediate models reusable.

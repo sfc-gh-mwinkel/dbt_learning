@@ -1,13 +1,15 @@
 # Lesson 5: Testing & Data Quality
 
-## Set Up for This Lesson
+## Prerequisites
 
-**Prerequisites:** Complete Lesson 4 (you should have all staging, intermediate, and mart models built).
+- **Completed:** Lesson 4 (you should have all staging, intermediate, and mart models built)
+- **Models exist:** `dim_customers`, `fct_orders` in marts; all intermediate models
+- **Seeds loaded:** With **intentionally broken data** (orders.csv has incorrect amounts)
 
-**Starting state:**
-- All models from Lesson 4 are built (`dbt run` completed successfully)
-- You have `dim_customers` and `fct_orders` tables in your marts schema
-- Seeds are loaded with **intentionally broken data** (orders.csv has incorrect amounts)
+**Catch up:** If you're missing prerequisites, run:
+```bash
+./scripts/catch_up.sh 5
+```
 
 If you're starting fresh or need to reset:
 
@@ -372,13 +374,13 @@ packages:
     version: [">=1.0.0", "<2.0.0"]
 ```
 
-> **Important**: If you haven't already installed packages, run this now:
+> **Important**: Before using any package tests, you must install packages first:
 
 ```bash
 dbt deps
 ```
 
-This command downloads and installs the `dbt_utils` package (and any other packages in `packages.yml`).
+This command downloads and installs the `dbt_utils` package (and any other packages in `packages.yml`). **Run this now if you haven't already.**
 
 Now you can use tests like:
 

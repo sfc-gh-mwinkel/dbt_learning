@@ -10,6 +10,20 @@ By the end of this lesson you will be able to:
 
 ---
 
+## Prerequisites
+
+- **Completed:** Lesson 1 (Project Setup)
+- **Models exist:** `stg_customers.sql` in `models/staging/`
+- **Seeds loaded:** `dbt seed` completed successfully
+- **Connection verified:** `dbt debug` passes
+
+**Catch up:** If you're missing prerequisites, run:
+```bash
+./scripts/catch_up.sh 2
+```
+
+---
+
 ## 2.1 YML Files in dbt
 
 dbt uses YAML files (`.yml`) for three main purposes:
@@ -209,7 +223,7 @@ This approach:
 1. Add the `products` and `order_items` tables to your `sources.yml` with at least one test each
 2. Create `stg_products.yml` and `stg_order_items.yml` files with appropriate tests
 3. Run `dbt test` and fix any failures
-4. Try adding a `relationships` test on `stg_orders.customer_id` pointing to `stg_customers.customer_id`
+4. Verify the `relationships` test on `stg_orders.customer_id` works by running `dbt test --select stg_orders`
 
 ---
 

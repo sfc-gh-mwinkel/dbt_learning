@@ -11,6 +11,19 @@ By the end of this lesson you will be able to:
 
 ---
 
+## Prerequisites
+
+- **Completed:** Lessons 1-9
+- **Models exist:** Full project with multiple layers
+- **Verified:** `dbt build` completes successfully
+
+**Catch up:** If you're missing prerequisites, run:
+```bash
+./scripts/catch_up.sh 10
+```
+
+---
+
 ## 10.1 The Selection Problem
 
 As your project grows, you don't always want to run everything. You need to:
@@ -233,15 +246,15 @@ dbt docs generate
 
 ## What's Next?
 
-You've completed all 10 lessons! You now have the skills to:
+You've completed the core dbt curriculum! Continue to **Lesson 11** to learn about enterprise data quality with database-enforced constraints, and **Lesson 12** for production patterns like advanced incremental strategies and exposures.
+
+You now have the skills to:
 - Set up and configure a dbt project on Snowflake
 - Build a layered data model (staging, intermediate, marts)
 - Test, document, and snapshot your data
 - Write macros for reusable logic
 - Navigate your DAG with graph operators
 
-Explore the [dbt documentation](https://docs.getdbt.com/) for advanced topics like packages, exposures, metrics, and CI/CD workflows.
-
 ---
 
-**Previous:** [Lesson 9 - Documentation & dbt docs](09_documentation.md) | **Back to:** [README](../README.md)
+**Previous:** [Lesson 9 - Documentation & dbt docs](09_documentation.md) | **Next:** [Lesson 11 - Enterprise Data Quality](11_dbt_constraints.md)

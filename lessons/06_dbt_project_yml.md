@@ -11,6 +11,19 @@ By the end of this lesson you will be able to:
 
 ---
 
+## Prerequisites
+
+- **Completed:** Lessons 1-5
+- **Models exist:** Full staging, intermediate, and marts layers
+- **Tests passing:** `dbt test` completes with no failures
+
+**Catch up:** If you're missing prerequisites, run:
+```bash
+./scripts/catch_up.sh 6
+```
+
+---
+
 ## 6.1 Anatomy of dbt_project.yml
 
 Here is your project file with annotations:
@@ -79,6 +92,8 @@ models:
 ```
 
 **The `+` prefix** means "this config applies to all models in this folder and its subfolders."
+
+> **Note:** You'll notice Jinja syntax like `{{ }}` and `{% %}` in some configurations. This templating language is covered in detail in Lesson 8. For now, just use the code as shown.
 
 **Override at model level** when a specific model needs different settings:
 
@@ -271,7 +286,9 @@ Hook types:
 | `on-run-start` | Before any model runs |
 | `on-run-end` | After all models have run |
 
-> **Note:** Be cautious with hooks. They run SQL directly and can have side effects. Use them for grants, logging, or cache clearing.
+> **Note:** Hooks use Jinja expressions like `{{ target.schema }}` and `{{ this }}`. These are explained in Lesson 8. For now, know that `{{ this }}` refers to the current model's table name.
+
+> **Caution:** Be cautious with hooks. They run SQL directly and can have side effects. Use them for grants, logging, or cache clearing.
 
 ---
 

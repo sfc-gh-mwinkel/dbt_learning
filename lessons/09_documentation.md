@@ -11,6 +11,19 @@ By the end of this lesson you will be able to:
 
 ---
 
+## Prerequisites
+
+- **Completed:** Lessons 1-8
+- **Models exist:** Full project with staging, intermediate, and marts
+- **YML files:** Model documentation files (`.yml`) for key models
+
+**Catch up:** If you're missing prerequisites, run:
+```bash
+./scripts/catch_up.sh 9
+```
+
+---
+
 ## 9.1 Why Document?
 
 Documentation answers "what does this table mean?" for anyone who encounters your models — analysts, new team members, or future you. In dbt, documentation is:
@@ -128,7 +141,7 @@ You can filter the graph:
 
 ## 9.6 Source Freshness
 
-If your sources have `loaded_at_field` and `freshness` configured (see `assets/yml_templates/sources.yml`), you can check freshness:
+Source freshness monitoring helps detect when upstream data pipelines are delayed or broken. If your sources have `loaded_at_field` and `freshness` configured, you can check freshness:
 
 ```bash
 dbt source freshness
@@ -149,7 +162,7 @@ sources:
     loaded_at_field: _etl_loaded_at
 ```
 
-> **Note:** Our seed tables don't have a `loaded_at` field, so freshness checks won't work on them. This feature is designed for production data pipelines with regular loads.
+> **Note:** Source freshness requires a timestamp column (`loaded_at_field`) that indicates when rows were loaded. Our seed tables don't have this column, so freshness checks won't work on them. This feature is designed for production data pipelines where ETL processes add load timestamps. In Lesson 12, we cover how to set this up properly.
 
 ---
 

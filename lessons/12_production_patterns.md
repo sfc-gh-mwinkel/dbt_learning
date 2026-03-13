@@ -10,6 +10,19 @@ By the end of this lesson, you will:
 
 ---
 
+## Prerequisites
+
+- **Completed:** Lessons 1-11
+- **Models exist:** Full project including incremental models
+- **Recommended:** Understanding of Jinja from Lesson 8
+
+**Catch up:** If you're missing prerequisites, run:
+```bash
+./scripts/catch_up.sh 12
+```
+
+---
+
 ## 12.1 Incremental Models Deep-Dive
 
 In Lesson 4, we briefly touched on incremental models. Now let's master them.
