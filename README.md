@@ -36,6 +36,10 @@ dbt debug
 # 4. Install packages
 dbt deps
 
+# Note: The project includes a generate_schema_name macro that creates
+# user-specific schemas (e.g., JDOE_STAGING). This behavior is explained
+# in Lesson 8, but it's active from the start for consistent naming.
+
 # 5. Start with Lesson 1
 # Tip: Run checkpoint before each lesson to verify prerequisites
 ./scripts/check_lesson_prerequisites.sh 1
@@ -57,6 +61,10 @@ dbt debug
 
 # 4. Install packages
 dbt deps
+
+# Note: The project includes a generate_schema_name macro that creates
+# user-specific schemas (e.g., JDOE_STAGING). This behavior is explained
+# in Lesson 8, but it's active from the start for consistent naming.
 
 # 5. Start with Lesson 1
 # Tip: Run checkpoint before each lesson to verify prerequisites
@@ -115,7 +123,7 @@ dbt_learning/
 │   └── marts/
 ├── seeds/                      # CSV seed files (copied from assets)
 ├── snapshots/                  # Snapshot definitions
-├── macros/                     # Custom macros
+├── macros/                     # Custom macros (includes generate_schema_name)
 ├── tests/                      # Singular test files
 ├── dbt_project.yml             # Project configuration
 ├── packages.yml                # Package dependencies

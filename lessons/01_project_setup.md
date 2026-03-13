@@ -202,6 +202,8 @@ This previews the first rows of your model without leaving the terminal.
 | `dbt run` | Builds models into your warehouse |
 | `dbt show` | Previews model output in the terminal |
 
+> **Note:** You may notice your models are created in schemas with your username prefix (e.g., `JDOE_STAGING` instead of just `STAGING`). This is controlled by a `generate_schema_name` macro included in the project. This behavior will be explained in detail in Lesson 8, but it's active from the start to ensure consistent schema naming throughout the lessons.
+
 ---
 
 **Next:** [Lesson 2 - Understanding YML Files](02_yml_files.md)
