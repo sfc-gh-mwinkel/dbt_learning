@@ -1,0 +1,38 @@
+version: 2
+
+models:
+  - name: stg_customers
+    description: "Cleaned and typed customer data from raw source"
+    columns:
+      - name: customer_id
+        description: "Primary key for customers"
+        tests:
+          - not_null
+          - unique
+      - name: email
+        description: "Customer email address"
+        tests:
+          - not_null
+
+  - name: stg_orders
+    description: "Cleaned and typed order data from raw source"
+    columns:
+      - name: order_id
+        description: "Primary key for orders"
+        tests:
+          - not_null
+          - unique
+      - name: customer_id
+        description: "Foreign key to customers"
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_customers')
+                field: customer_id
+      - name: status
+        description: "Current order status"
+        tests:
+          - accepted_values:
+              arguments:
+                values: ['completed', 'pending', 'shipped', 'returned', 'cancelled']

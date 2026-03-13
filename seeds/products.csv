@@ -1,0 +1,7 @@
+product_id,product_name,category,price,is_active
+501,Widget A,electronics,29.99,true
+502,Widget B,electronics,49.99,true
+503,Gadget X,home,15.50,true
+504,Gadget Y,home,22.00,false
+505,Tool Alpha,tools,75.00,true
+506,Tool Beta,tools,120.00,true
