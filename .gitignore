@@ -7,3 +7,5 @@ profiles.yml
 __pycache__/
 .DS_Store
 dbt_internal_packages/
+.venv/
+package-lock.yml

@@ -70,7 +70,7 @@ models:
               values: ['gold', 'silver', 'bronze']
 ```
 
-Apply these to your marts. Create `models/marts/schema.yml`:
+Apply these to your marts. Create `models/marts/dim_customers.yml`:
 
 ```yaml
 version: 2
@@ -89,7 +89,14 @@ models:
         tests:
           - accepted_values:
               values: ['gold', 'silver', 'bronze']
+```
 
+Create `models/marts/fct_orders.yml`:
+
+```yaml
+version: 2
+
+models:
   - name: fct_orders
     description: "Order fact table with payment and line item details"
     columns:
@@ -427,7 +434,7 @@ dbt test                          # Run all tests
 dbt test --select staging         # Tests for staging models only
 dbt test --select dim_customers   # Tests for one model
 dbt test --select source:raw      # Tests on sources
-dbt test --select tag:marts       # Tests on tagged models
+dbt test --select tag:marts       # Tests on tagged models (tags covered in Lesson 6)
 ```
 
 ---

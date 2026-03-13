@@ -1,0 +1,10 @@
+version: 2
+
+models:
+  - name: stg_payments
+    description: "Cleaned payment transaction data"
+    columns:
+      - name: payment_id
+        tests:
+          - not_null
+          - unique

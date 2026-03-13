@@ -1,0 +1,23 @@
+version: 2
+
+models:
+  - name: stg_orders
+    description: "Cleaned and typed order data from raw source"
+    columns:
+      - name: order_id
+        description: "Primary key for orders"
+        tests:
+          - not_null
+          - unique
+      - name: customer_id
+        description: "Foreign key to customers"
+        tests:
+          - not_null
+          - relationships:
+              to: ref('stg_customers')
+              field: customer_id
+      - name: status
+        description: "Current order status"
+        tests:
+          - accepted_values:
+              values: ['completed', 'pending', 'shipped', 'returned', 'cancelled']

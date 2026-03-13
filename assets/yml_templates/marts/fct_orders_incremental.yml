@@ -1,0 +1,19 @@
+version: 2
+
+models:
+  - name: fct_orders_incremental
+    description: "Order facts with incremental loading pattern"
+    columns:
+      - name: order_id
+        description: "Primary key"
+        tests:
+          - not_null
+          - unique
+      - name: customer_id
+        description: "Foreign key to dim_customers"
+      - name: order_date
+        description: "Date order was placed"
+      - name: total_amount
+        description: "Payment amount for the order"
+      - name: loaded_at
+        description: "Timestamp when row was loaded by dbt"

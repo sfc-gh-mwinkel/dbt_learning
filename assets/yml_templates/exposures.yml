@@ -1,0 +1,51 @@
+version: 2
+
+exposures:
+  - name: executive_dashboard
+    label: "Executive KPI Dashboard"
+    type: dashboard
+    maturity: high
+    url: https://your-bi-tool.com/dashboards/executive
+    description: >
+      Weekly executive dashboard showing revenue, customer acquisition,
+      and order metrics. Reviewed in Monday leadership meetings.
+    
+    depends_on:
+      - ref('fct_orders')
+      - ref('dim_customers')
+    
+    owner:
+      name: Analytics Team
+      email: analytics@company.com
+
+  - name: customer_360_app
+    label: "Customer 360 Application"
+    type: application
+    maturity: medium
+    url: https://internal-apps.company.com/customer-360
+    description: >
+      Internal application for support team to view complete
+      customer history and interactions.
+    
+    depends_on:
+      - ref('dim_customers')
+      - ref('fct_orders')
+    
+    owner:
+      name: Engineering Team
+      email: eng@company.com
+
+  - name: churn_prediction_model
+    label: "Customer Churn ML Model"
+    type: ml
+    maturity: low
+    description: >
+      Machine learning model predicting customer churn probability.
+      Retrained weekly using customer order history.
+    
+    depends_on:
+      - ref('dim_customers')
+    
+    owner:
+      name: Data Science Team
+      email: datascience@company.com

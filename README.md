@@ -2,7 +2,7 @@
 
 A hands-on, lesson-driven introduction to **dbt-core** with **Snowflake**. Start from zero and build a complete dbt project through structured lessons covering fundamentals to advanced data quality patterns.
 
-> **New!** Added checkpoint validation, catch-up scripts, and Lesson 12 on enterprise data quality with `dbt_constraints`.
+> Includes checkpoint validation, catch-up scripts, and lessons through enterprise data quality with `dbt_constraints`.
 
 > **Windows Users**: PowerShell versions of all scripts are included. See [Cross-Platform Commands Guide](CROSS_PLATFORM_COMMANDS.md) for command translations.
 
@@ -12,35 +12,51 @@ A hands-on, lesson-driven introduction to **dbt-core** with **Snowflake**. Start
 
 - Python 3.9+
 - A Snowflake account (with a database, warehouse, and role)
-- `pip install dbt-core dbt-snowflake`
-
-> **Production Setup**: This project is configured for multi-user environments where multiple students work in `SANDBOX_DBT_TRAINING` database with user-specific schemas (e.g., `JDOE_STAGING`). See [Multi-User Setup Guide](MULTI_USER_SETUP.md) for details.
 
 ---
 
 ## Getting Started
 
-### Linux/macOS
+### Quick Start (Recommended)
+
+Run the interactive setup wizard:
+
+```bash
+# Clone and run wizard
+git clone <repo-url> && cd dbt_learning
+./scripts/setup_wizard.sh
+```
+
+The wizard guides you through Python environment setup, dbt installation, and Snowflake connection configuration.
+
+> **Using an AI assistant?** Point it to [SETUP_WIZARD.md](SETUP_WIZARD.md) for detailed setup guidance.
+
+### Manual Setup: Linux/macOS
 
 ```bash
 # 1. Clone this repo
 git clone <repo-url> && cd dbt_learning
 
-# 2. Set up your Snowflake connection
+# 2. Create virtual environment and install dbt
+python3 -m venv .venv
+source .venv/bin/activate
+pip install dbt-core dbt-snowflake
+
+# 3. Set up your Snowflake connection
 cp profiles.yml.example ~/.dbt/profiles.yml
 # Edit ~/.dbt/profiles.yml with your credentials
 
-# 3. Verify connection
+# 4. Verify connection
 dbt debug
 
-# 4. Install packages
+# 5. Install packages
 dbt deps
 
 # Note: The project includes a generate_schema_name macro that creates
 # user-specific schemas (e.g., JDOE_STAGING). This behavior is explained
 # in Lesson 8, but it's active from the start for consistent naming.
 
-# 5. Start with Lesson 1
+# 6. Start with Lesson 1
 # Tip: Run checkpoint before each lesson to verify prerequisites
 ./scripts/check_lesson_prerequisites.sh 1
 ```
@@ -52,21 +68,26 @@ dbt deps
 git clone <repo-url>
 cd dbt_learning
 
-# 2. Set up your Snowflake connection
+# 2. Create virtual environment and install dbt
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+pip install dbt-core dbt-snowflake
+
+# 3. Set up your Snowflake connection
 Copy-Item profiles.yml.example $HOME\.dbt\profiles.yml
 # Edit $HOME\.dbt\profiles.yml with your credentials
 
-# 3. Verify connection
+# 4. Verify connection
 dbt debug
 
-# 4. Install packages
+# 5. Install packages
 dbt deps
 
 # Note: The project includes a generate_schema_name macro that creates
 # user-specific schemas (e.g., JDOE_STAGING). This behavior is explained
 # in Lesson 8, but it's active from the start for consistent naming.
 
-# 5. Start with Lesson 1
+# 6. Start with Lesson 1
 # Tip: Run checkpoint before each lesson to verify prerequisites
 .\scripts\check_lesson_prerequisites.ps1 1
 ```
@@ -87,7 +108,8 @@ dbt deps
 | 8 | [Writing Macros](lessons/08_macros.md) | Jinja basics, custom macros, generate_schema_name | `dbt compile` |
 | 9 | [Documentation & dbt docs](lessons/09_documentation.md) | Descriptions, doc blocks, DAG viewer, source freshness | `dbt docs generate`, `dbt docs serve` |
 | 10 | [Graph Operators & dbt build](lessons/10_graph_operators.md) | +model+, @, dbt build, --full-refresh, selectors | `dbt build`, `dbt ls --select` |
-| 12 | [**NEW!** Enterprise Data Quality](lessons/12_dbt_constraints.md) | dbt_constraints, primary keys, foreign keys, database enforcement | `dbt test` |
+| 11 | [Enterprise Data Quality](lessons/11_dbt_constraints.md) | dbt_constraints, primary keys, foreign keys, database enforcement | `dbt test` |
+| 12 | [Production Patterns](lessons/12_production_patterns.md) | Incremental deep-dive, environment configs, source freshness, exposures | `dbt source freshness` |
 
 ---
 
@@ -106,7 +128,8 @@ dbt_learning/
 │   ├── 08_macros.md
 │   ├── 09_documentation.md
 │   ├── 10_graph_operators.md
-│   └── 12_dbt_constraints.md   # Enterprise data quality
+│   ├── 11_dbt_constraints.md
+│   └── 12_production_patterns.md
 ├── assets/                     # Pre-built files for lessons
 │   ├── seeds/                  # CSV data files to copy into seeds/
 │   ├── models/                 # Reference model implementations
@@ -128,12 +151,14 @@ dbt_learning/
 ├── dbt_project.yml             # Project configuration
 ├── packages.yml                # Package dependencies
 ├── profiles.yml.example        # Connection template
-├── scripts/                    # Helper scripts (NEW!)
-│   ├── check_lesson_prerequisites.sh   # Verify prerequisites (Linux/macOS)
-│   ├── check_lesson_prerequisites.ps1  # Verify prerequisites (Windows)
-│   ├── catch_up.sh                     # Auto-copy missing files (Linux/macOS)
-│   └── catch_up.ps1                    # Auto-copy missing files (Windows)
-└── TROUBLESHOOTING.md          # Common errors & solutions (NEW!)
+├── scripts/                    # Helper scripts
+│   ├── setup_wizard.sh               # Interactive setup (Linux/macOS)
+│   ├── check_lesson_prerequisites.sh # Verify prerequisites (Linux/macOS)
+│   ├── check_lesson_prerequisites.ps1# Verify prerequisites (Windows)
+│   ├── catch_up.sh                   # Auto-copy missing files (Linux/macOS)
+│   └── catch_up.ps1                  # Auto-copy missing files (Windows)
+├── SETUP_WIZARD.md             # Detailed setup guide (for AI assistants)
+└── TROUBLESHOOTING.md          # Common errors & solutions
 ```
 
 ---

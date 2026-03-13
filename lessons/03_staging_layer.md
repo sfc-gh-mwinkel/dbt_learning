@@ -281,7 +281,7 @@ Right now all staging models depend only on sources. In the next lesson, you'll 
 
 1. Add a `line_total` computed column to `stg_order_items` if you haven't already
 2. Try changing `stg_customers` to `ephemeral` materialization and run `dbt run`. What happens when you try `dbt show --select stg_customers`?
-3. Update your `schema.yml` to cover all five staging models with `not_null` and `unique` tests on primary keys
+3. Create `.yml` files for all five staging models (e.g., `stg_products.yml`, `stg_order_items.yml`, `stg_payments.yml`) with `not_null` and `unique` tests on primary keys
 4. Run `dbt test` and ensure all tests pass
 
 ---

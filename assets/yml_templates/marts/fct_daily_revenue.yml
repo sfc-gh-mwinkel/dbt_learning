@@ -1,0 +1,23 @@
+version: 2
+
+models:
+  - name: fct_daily_revenue
+    description: "Daily revenue aggregation with incremental loading"
+    columns:
+      - name: revenue_date
+        description: "Date of revenue (day granularity)"
+        tests:
+          - not_null
+          - unique
+      - name: order_count
+        description: "Number of orders for the day"
+      - name: unique_customers
+        description: "Count of distinct customers who ordered"
+      - name: total_revenue
+        description: "Sum of all order amounts for the day"
+      - name: avg_order_value
+        description: "Average order value (revenue / orders)"
+      - name: built_in_environment
+        description: "dbt target environment that built this row"
+      - name: last_updated_at
+        description: "Timestamp when row was last updated"

@@ -23,9 +23,12 @@ Documentation answers "what does this table mean?" for anyone who encounters you
 
 ## 9.2 Descriptions in YAML
 
-You've already been adding descriptions in your `schema.yml` files:
+You've already been adding descriptions in your model `.yml` files:
 
 ```yaml
+# models/marts/dim_customers.yml
+version: 2
+
 models:
   - name: dim_customers
     description: "Customer dimension with lifetime value and tier classification"
@@ -152,7 +155,7 @@ sources:
 
 ## 9.7 Exercises
 
-1. Add descriptions to all columns in your `models/marts/schema.yml`
+1. Add descriptions to all columns in your mart model `.yml` files (`dim_customers.yml`, `fct_orders.yml`)
 2. Create `models/docs.md` with doc blocks for `customer_tier` and `order_status`
 3. Reference the doc blocks in your schema YAML using `'{{ doc("customer_tier") }}'`
 4. Run `dbt docs generate && dbt docs serve`

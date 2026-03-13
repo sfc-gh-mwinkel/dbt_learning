@@ -1,0 +1,16 @@
+version: 2
+
+models:
+  - name: dim_customers
+    description: "Customer dimension with lifetime value and tier classification"
+    columns:
+      - name: customer_id
+        description: "Primary key"
+        tests:
+          - not_null
+          - unique
+      - name: customer_tier
+        description: "Customer value tier: gold, silver, or bronze"
+        tests:
+          - accepted_values:
+              values: ['gold', 'silver', 'bronze']

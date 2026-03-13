@@ -398,7 +398,7 @@ dbt show --select fct_orders --limit 5
 1. Run `dbt run` and verify all models compile and execute
 2. Run `dbt ls --resource-type model` to see the full model list
 3. **Convert `fct_orders` to incremental** (detailed instructions below)
-4. Create a `schema.yml` in `models/intermediate/` with `not_null` + `unique` tests on primary keys for all three intermediate models
+4. Create `.yml` files for each intermediate model (e.g., `int_orders_with_payments.yml`, `int_order_items_with_products.yml`, `int_customers__order_summary.yml`) with `not_null` + `unique` tests on primary keys
 
 ### Exercise 3: Convert fct_orders to Incremental (Detailed Steps)
 

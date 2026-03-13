@@ -5,7 +5,7 @@
 By the end of this lesson you will be able to:
 - Understand the role of YML files in a dbt project
 - Write `sources.yml` with descriptions and basic tests
-- Write `schema.yml` to document and test your models
+- Write model-specific `.yml` files to document and test your models
 - Run `dbt test` to validate your data
 
 ---
@@ -18,7 +18,7 @@ dbt uses YAML files (`.yml`) for three main purposes:
 |------|---------|
 | `dbt_project.yml` | Project-level configuration (covered in Lesson 6) |
 | `sources.yml` | Declare raw data tables that exist outside dbt |
-| `schema.yml` | Document and test your dbt models |
+| `<model_name>.yml` | Document and test individual dbt models |
 
 You already created a basic `sources.yml` in Lesson 1. Now let's deepen it.
 
@@ -77,9 +77,11 @@ dbt test --select source:raw
 
 ---
 
-## 2.3 Creating schema.yml for Models
+## 2.3 Creating Model YML Files (1:1 Pattern)
 
-Schema files document and test your _models_. Create `models/staging/schema.yml`:
+Each model gets its own `.yml` file with the same name. This keeps documentation close to the code and makes it easy to find.
+
+Create `models/staging/stg_customers.yml`:
 
 ```yaml
 version: 2
@@ -99,7 +101,14 @@ models:
         description: "Customer email address"
         tests:
           - not_null
+```
 
+Create `models/staging/stg_orders.yml`:
+
+```yaml
+version: 2
+
+models:
   - name: stg_orders
     description: "Cleaned and typed order data from raw source"
     columns:
@@ -174,34 +183,31 @@ This means 3 duplicate `customer_id` values were found. You'd go fix your source
 
 ## 2.6 Where to Put YML Files
 
-There are two common conventions:
+The recommended convention is **1:1 model-to-yml files**:
 
-**Option A: Alongside models (recommended approach)**
 ```
 models/staging/
-  stg_customers.sql
+  sources.yml           # Source definitions
+  stg_customers.sql     # Model SQL
+  stg_customers.yml     # Model documentation & tests
   stg_orders.sql
-  sources.yml
-  schema.yml
+  stg_orders.yml
+  stg_products.sql
+  stg_products.yml
 ```
 
-**Option B: Centralized `_schema.yml` per folder or dedicated folder**
-```
-models/staging/
-  _sources.yml
-  _schema.yml
-  stg_customers.sql
-  stg_orders.sql
-```
-
-Both work identically. The underscore prefix is a convention that sorts config files to the top of the directory listing.
+This approach:
+- Keeps documentation close to the code
+- Makes it easy to find tests for a specific model
+- Reduces merge conflicts when multiple developers work on different models
+- Scales well as projects grow
 
 ---
 
 ## 2.7 Exercises
 
 1. Add the `products` and `order_items` tables to your `sources.yml` with at least one test each
-2. Create entries for `stg_products` and `stg_order_items` in `schema.yml` if you built them in Lesson 1's exercises
+2. Create `stg_products.yml` and `stg_order_items.yml` files with appropriate tests
 3. Run `dbt test` and fix any failures
 4. Try adding a `relationships` test on `stg_orders.customer_id` pointing to `stg_customers.customer_id`
 
@@ -212,7 +218,7 @@ Both work identically. The underscore prefix is a convention that sorts config f
 | Concept | What You Learned |
 |---------|-----------------|
 | `sources.yml` | Declares and documents raw tables; can include source-level tests |
-| `schema.yml` | Documents and tests your dbt models |
+| `<model>.yml` | Documents and tests individual dbt models (1:1 pattern) |
 | `not_null` | Ensures a column has no NULL values |
 | `unique` | Ensures a column has no duplicate values |
 | `accepted_values` | Ensures column values belong to a defined set |

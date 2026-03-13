@@ -1,0 +1,10 @@
+version: 2
+
+models:
+  - name: stg_products
+    description: "Cleaned product catalog data"
+    columns:
+      - name: product_id
+        tests:
+          - not_null
+          - unique

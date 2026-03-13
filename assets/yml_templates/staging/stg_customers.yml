@@ -1,0 +1,15 @@
+version: 2
+
+models:
+  - name: stg_customers
+    description: "Cleaned and typed customer data from raw source"
+    columns:
+      - name: customer_id
+        description: "Primary key for customers"
+        tests:
+          - not_null
+          - unique
+      - name: email
+        description: "Customer email address"
+        tests:
+          - not_null

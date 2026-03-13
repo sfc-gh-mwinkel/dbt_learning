@@ -58,7 +58,7 @@ Every dimension table must have a primary key. This guarantees uniqueness and en
 
 ### Simple Primary Key
 
-Update `models/marts/schema.yml`:
+Update `models/marts/dim_customers.yml`:
 
 ```yaml
 version: 2
@@ -113,9 +113,11 @@ Foreign keys ensure referential integrity between tables. Every value in a forei
 
 ### Simple Foreign Key
 
-Update `models/marts/schema.yml` for `fct_orders`:
+Update `models/marts/fct_orders.yml`:
 
 ```yaml
+version: 2
+
 models:
   - name: fct_orders
     description: "Order fact table with payment and line item details"
@@ -178,8 +180,9 @@ columns:
 
 ## 12.6 Complete Example: Enterprise-Grade Marts
 
-Here's how your `models/marts/schema.yml` should look with full constraint enforcement:
+Here's how your mart `.yml` files should look with full constraint enforcement:
 
+**`models/marts/dim_customers.yml`**:
 ```yaml
 version: 2
 
@@ -208,7 +211,13 @@ models:
         description: "Total amount spent by customer"
         tests:
           - not_null
+```
 
+**`models/marts/fct_orders.yml`**:
+```yaml
+version: 2
+
+models:
   - name: fct_orders
     description: "Order fact table with payment and line item details"
     columns:
@@ -313,10 +322,11 @@ FCT_ORDERS      | fct_orders_customer_fk    | FOREIGN KEY
    ```
 
 2. **Add primary key constraint to dim_customers**:
-   - Update `models/marts/schema.yml`
+   - Update `models/marts/dim_customers.yml`
    - Add `dbt_constraints.primary_key` test to `customer_id`
 
 3. **Add foreign key constraint to fct_orders**:
+   - Update `models/marts/fct_orders.yml`
    - Add `dbt_constraints.foreign_key` test to `customer_id`
    - Reference `dim_customers.customer_id`
 

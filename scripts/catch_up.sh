@@ -57,7 +57,7 @@ case $LESSON in
         echo "Next steps:"
         echo "1. Run: dbt seed"
         echo "2. Run: dbt run --select staging"
-        echo "3. Create models/staging/schema.yml (follow lesson instructions)"
+        echo "3. Create stg_customers.yml and stg_orders.yml (follow lesson instructions)"
         ;;
         
     3)
@@ -76,7 +76,12 @@ case $LESSON in
         copy_if_missing "assets/models/staging/stg_order_items.sql" "models/staging/stg_order_items.sql" "stg_order_items.sql"
         copy_if_missing "assets/models/staging/stg_payments.sql" "models/staging/stg_payments.sql" "stg_payments.sql"
         copy_if_missing "assets/yml_templates/sources.yml" "models/staging/sources.yml" "sources.yml"
-        copy_if_missing "assets/yml_templates/staging_schema.yml" "models/staging/schema.yml" "staging schema.yml"
+        # Copy staging yml files (1:1 pattern)
+        copy_if_missing "assets/yml_templates/staging/stg_customers.yml" "models/staging/stg_customers.yml" "stg_customers.yml"
+        copy_if_missing "assets/yml_templates/staging/stg_orders.yml" "models/staging/stg_orders.yml" "stg_orders.yml"
+        copy_if_missing "assets/yml_templates/staging/stg_products.yml" "models/staging/stg_products.yml" "stg_products.yml"
+        copy_if_missing "assets/yml_templates/staging/stg_order_items.yml" "models/staging/stg_order_items.yml" "stg_order_items.yml"
+        copy_if_missing "assets/yml_templates/staging/stg_payments.yml" "models/staging/stg_payments.yml" "stg_payments.yml"
         echo ""
         echo "Next steps:"
         echo "1. Run: dbt seed"
@@ -118,8 +123,13 @@ case $LESSON in
         echo "================================================"
         # All previous prereqs
         "$0" 4  # Recursively call to set up lesson 4
-        copy_if_missing "assets/yml_templates/intermediate_schema.yml" "models/intermediate/schema.yml" "intermediate schema.yml"
-        copy_if_missing "assets/yml_templates/marts_schema.yml" "models/marts/schema.yml" "marts schema.yml"
+        # Copy intermediate yml files (1:1 pattern)
+        copy_if_missing "assets/yml_templates/intermediate/int_orders_with_payments.yml" "models/intermediate/int_orders_with_payments.yml" "int_orders_with_payments.yml"
+        copy_if_missing "assets/yml_templates/intermediate/int_order_items_with_products.yml" "models/intermediate/int_order_items_with_products.yml" "int_order_items_with_products.yml"
+        copy_if_missing "assets/yml_templates/intermediate/int_customers__order_summary.yml" "models/intermediate/int_customers__order_summary.yml" "int_customers__order_summary.yml"
+        # Copy marts yml files (1:1 pattern)
+        copy_if_missing "assets/yml_templates/marts/dim_customers.yml" "models/marts/dim_customers.yml" "dim_customers.yml"
+        copy_if_missing "assets/yml_templates/marts/fct_orders.yml" "models/marts/fct_orders.yml" "fct_orders.yml"
         copy_if_missing "assets/tests/assert_order_amount_matches_line_items.sql" "tests/assert_order_amount_matches_line_items.sql" "singular test"
         echo ""
         echo "Next steps:"
@@ -166,7 +176,7 @@ case $LESSON in
         "$0" 8  # Recursively call to set up lesson 8
         echo ""
         echo "Next steps:"
-        echo "1. Add descriptions to models/marts/schema.yml"
+        echo "1. Add descriptions to model .yml files"
         echo "2. Create models/docs.md with doc blocks"
         echo "3. Run: dbt docs generate && dbt docs serve"
         ;;
@@ -181,20 +191,37 @@ case $LESSON in
         echo "2. Practice selection syntax: dbt run --select +dim_customers+"
         ;;
         
-    12)
-        echo "Setting up for Lesson 12: dbt_constraints (Advanced Testing)"
-        echo "============================================================="
+    11)
+        echo "Setting up for Lesson 11: dbt_constraints (Enterprise Data Quality)"
+        echo "===================================================================="
         "$0" 5  # Recursively call to set up lesson 5
         echo ""
         echo "Next steps:"
         echo "1. Add dbt_constraints package to packages.yml"
         echo "2. Run: dbt deps"
-        echo "3. Follow Lesson 12 instructions"
+        echo "3. Follow Lesson 11 instructions"
+        ;;
+        
+    12)
+        echo "Setting up for Lesson 12: Production Patterns"
+        echo "=============================================="
+        "$0" 8  # Recursively call to set up lesson 8
+        # Copy incremental model examples
+        copy_if_missing "assets/models/marts/fct_orders_incremental.sql" "models/marts/fct_orders_incremental.sql" "fct_orders_incremental.sql"
+        copy_if_missing "assets/models/marts/fct_daily_revenue.sql" "models/marts/fct_daily_revenue.sql" "fct_daily_revenue.sql"
+        copy_if_missing "assets/yml_templates/marts/fct_orders_incremental.yml" "models/marts/fct_orders_incremental.yml" "fct_orders_incremental.yml"
+        copy_if_missing "assets/yml_templates/marts/fct_daily_revenue.yml" "models/marts/fct_daily_revenue.yml" "fct_daily_revenue.yml"
+        copy_if_missing "assets/yml_templates/exposures.yml" "models/exposures.yml" "exposures.yml"
+        echo ""
+        echo "Next steps:"
+        echo "1. Run: dbt run --select fct_orders_incremental"
+        echo "2. Run it again to see incremental behavior"
+        echo "3. Explore exposures with: dbt docs generate && dbt docs serve"
         ;;
         
     *)
-        echo -e "${RED}Invalid lesson number: $LESSON${NC}"
-        echo "Usage: ./scripts/catch_up.sh <1-10 or 12>"
+        echo -e "${YELLOW}Invalid lesson number: $LESSON${NC}"
+        echo "Usage: ./scripts/catch_up.sh <1-12>"
         exit 1
         ;;
 esac
