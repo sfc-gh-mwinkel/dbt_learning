@@ -4,7 +4,7 @@ A hands-on, lesson-driven introduction to **dbt-core** with **Snowflake**. Start
 
 > Includes checkpoint validation, catch-up scripts, and lessons through enterprise data quality with `dbt_constraints`.
 
-> **Windows Users**: PowerShell versions of all scripts are included. See [Cross-Platform Commands Guide](CROSS_PLATFORM_COMMANDS.md) for command translations.
+> **Cross-platform**: Use `python run.py` for an interactive menu that works on any OS. Shell scripts (bash/PowerShell) also included. See [Cross-Platform Commands Guide](CROSS_PLATFORM_COMMANDS.md).
 
 ---
 
@@ -53,12 +53,13 @@ dbt debug
 dbt deps
 
 # Note: The project includes a generate_schema_name macro that creates
-# user-specific schemas (e.g., JDOE_STAGING). This behavior is explained
+# user-specific schemas (e.g., JSNOW_STAGING). This behavior is explained
 # in Lesson 8, but it's active from the start for consistent naming.
 
 # 6. Start with Lesson 1
 # Tip: Run checkpoint before each lesson to verify prerequisites
-./scripts/check_lesson_prerequisites.sh 1
+python run.py check 1
+# Or: ./scripts/check_lesson_prerequisites.sh 1
 ```
 
 ### Windows (PowerShell)
@@ -84,12 +85,13 @@ dbt debug
 dbt deps
 
 # Note: The project includes a generate_schema_name macro that creates
-# user-specific schemas (e.g., JDOE_STAGING). This behavior is explained
+# user-specific schemas (e.g., JSNOW_STAGING). This behavior is explained
 # in Lesson 8, but it's active from the start for consistent naming.
 
 # 6. Start with Lesson 1
 # Tip: Run checkpoint before each lesson to verify prerequisites
-.\scripts\check_lesson_prerequisites.ps1 1
+python run.py check 1
+# Or: .\scripts\check_lesson_prerequisites.ps1 1
 ```
 
 ---
@@ -184,6 +186,9 @@ dbt_learning/
 │   ├── check_lesson_prerequisites.ps1# Verify prerequisites (Windows)
 │   ├── catch_up.sh                   # Auto-copy missing files (Linux/macOS)
 │   └── catch_up.ps1                  # Auto-copy missing files (Windows)
+├── run.py                      # Cross-platform interactive runner (any OS)
+├── cleanup_workspace.sh        # Reset local workspace (Linux/macOS)
+├── cleanup_workspace.ps1       # Reset local workspace (Windows)
 ├── SETUP_WIZARD.md             # Detailed setup guide (for AI assistants)
 └── TROUBLESHOOTING.md          # Common errors & solutions
 ```
@@ -194,6 +199,11 @@ dbt_learning/
 
 1. **Follow lessons in order.** Each lesson builds on the previous one.
 2. **Use checkpoint validation.** Before starting a lesson, run:
+   
+   **Any platform (recommended):**
+   ```bash
+   python run.py check <lesson_number>
+   ```
    
    **Linux/macOS:**
    ```bash
@@ -208,6 +218,11 @@ dbt_learning/
 3. **Type the code yourself.** Don't just copy-paste. Muscle memory matters.
 
 4. **Stuck? Use the catch-up script:**
+   
+   **Any platform (recommended):**
+   ```bash
+   python run.py catchup <lesson_number>
+   ```
    
    **Linux/macOS:**
    ```bash

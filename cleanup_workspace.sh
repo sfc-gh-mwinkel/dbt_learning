@@ -3,37 +3,76 @@
 
 set -e
 
+PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+# ── IGNORE LIST ──────────────────────────────────────────────
+# Files and folders that should NOT be removed during cleanup.
+# Edit these arrays in a client fork to preserve client-specific
+# assets without modifying the cleanup logic below.
+#
+# IGNORE_FILES: filename matches (applies across all directories)
+# IGNORE_DIRS:  folder paths relative to project root
+#
+IGNORE_FILES=(
+    ".gitkeep"
+    "generate_schema_name.sql"
+    # --- Add client-specific files below ---
+    # "client_masking_policy.sql"
+    # "custom_audit_log.sql"
+)
+
+IGNORE_DIRS=(
+    # --- Add client-specific folders below ---
+    # "models/client_reports"
+    # "models/compliance"
+    # "macros/client_utils"
+    # "tests/client_regression"
+)
+# ─────────────────────────────────────────────────────────────
+
+clean_directory() {
+    local dir="$1"
+    local find_args=(-type f)
+
+    for f in "${IGNORE_FILES[@]}"; do
+        find_args+=( ! -name "$f" )
+    done
+    for d in "${IGNORE_DIRS[@]}"; do
+        find_args+=( ! -path "$PROJECT_ROOT/$d/*" )
+    done
+
+    find "$PROJECT_ROOT/$dir/" "${find_args[@]}" -delete 2>/dev/null || true
+}
+
 echo "🧹 Cleaning up local dbt workspace..."
 
-# Remove compiled artifacts
 echo "  Removing target/ and dbt_packages/..."
-rm -rf target/ dbt_packages/
+rm -rf "$PROJECT_ROOT/target/" "$PROJECT_ROOT/dbt_packages/"
 
-# Remove completed models (keep .gitkeep)
 echo "  Removing models/..."
-find models/ -type f ! -name '.gitkeep' -delete
+clean_directory "models"
 
-# Remove completed tests (keep .gitkeep)
 echo "  Removing tests/..."
-find tests/ -type f ! -name '.gitkeep' -delete
+clean_directory "tests"
 
-# Remove seeds (keep .gitkeep)
 echo "  Removing seeds/..."
-find seeds/ -type f ! -name '.gitkeep' -delete
+clean_directory "seeds"
 
-# Remove snapshots (keep .gitkeep)
 echo "  Removing snapshots/..."
-find snapshots/ -type f ! -name '.gitkeep' -delete
+clean_directory "snapshots"
 
-# Remove all macros except generate_schema_name (keep .gitkeep)
-echo "  Removing macros/ (keeping generate_schema_name.sql)..."
-find macros/ -type f ! -name '.gitkeep' ! -name 'generate_schema_name.sql' -delete
+echo "  Removing macros/..."
+clean_directory "macros"
 
-# Remove package-lock.yml
-if [ -f "package-lock.yml" ]; then
+if [ -f "$PROJECT_ROOT/package-lock.yml" ]; then
     echo "  Removing package-lock.yml..."
-    rm package-lock.yml
+    rm "$PROJECT_ROOT/package-lock.yml"
 fi
+
+# Remove empty subdirectories (but not the top-level dirs themselves)
+for dir in models tests seeds snapshots macros; do
+    find "$PROJECT_ROOT/$dir/" -mindepth 1 -type d -empty -delete 2>/dev/null || true
+done
 
 echo "✅ Local workspace cleaned!"
 echo ""

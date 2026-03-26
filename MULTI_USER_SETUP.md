@@ -27,7 +27,7 @@ dbt_learning:
       account: abc12345.us-east-1
       
       # IMPORTANT: Use your actual name
-      user: john.doe@company.com  # ← Your email or username
+      user: jon.snow@company.com  # ← Your email or username
       
       authenticator: externalbrowser
       role: YOUR_ROLE
@@ -52,15 +52,15 @@ Check what schemas were created:
 
 ```sql
 -- In Snowflake
-SHOW SCHEMAS LIKE 'JDOE_%' IN DATABASE SANDBOX_DBT_TRAINING;
+SHOW SCHEMAS LIKE 'JSNOW_%' IN DATABASE SANDBOX_DBT_TRAINING;
 ```
 
 **Expected output**:
 ```
-JDOE_STAGING
-JDOE_INTERMEDIATE
-JDOE_MARTS
-JDOE_PUBLIC
+JSNOW_STAGING
+JSNOW_INTERMEDIATE
+JSNOW_MARTS
+JSNOW_PUBLIC
 ```
 
 ---
@@ -71,7 +71,7 @@ JDOE_PUBLIC
 
 **Given** `profiles.yml`:
 ```yaml
-user: john.doe@company.com
+user: jon.snow@company.com
 database: SANDBOX_DBT_TRAINING
 ```
 
@@ -84,14 +84,14 @@ models:
 ```
 
 **Result**:
-1. Extract username: `john.doe@company.com`
-2. Remove email domain: `john.doe`
-3. Split on `.`: `["john", "doe"]`
-4. Get first initial + last name: `j` + `doe` = `jdoe`
-5. Convert to uppercase: `JDOE`
-6. Combine with schema: `JDOE_STAGING`
+1. Extract username: `jon.snow@company.com`
+2. Remove email domain: `jon.snow`
+3. Split on `.`: `["jon", "snow"]`
+4. Get first initial + last name: `j` + `snow` = `jsnow`
+5. Convert to uppercase: `JSNOW`
+6. Combine with schema: `JSNOW_STAGING`
 
-**Full model path**: `SANDBOX_DBT_TRAINING.JDOE_STAGING.STG_CUSTOMERS`
+**Full model path**: `SANDBOX_DBT_TRAINING.JSNOW_STAGING.STG_CUSTOMERS`
 
 ---
 
@@ -101,42 +101,42 @@ The macro automatically handles multiple formats:
 
 | Format | Example | Resulting Prefix |
 |--------|---------|------------------|
-| Email (Okta/SSO) | `john.doe@company.com` | `JDOE` |
-| Snowflake username | `JOHN.DOE` | `JDOE` |
-| Simple format | `john.doe` | `JDOE` |
-| Underscore separator | `jane_smith` | `JSMITH` |
+| Email (Okta/SSO) | `jon.snow@company.com` | `JSNOW` |
+| Snowflake username | `JON.SNOW` | `JSNOW` |
+| Simple format | `jon.snow` | `JSNOW` |
+| Underscore separator | `sara_glacier` | `SGLACIER` |
 | No separator | `bobsmith` | `BOBSMITH` |
 
 ---
 
 ## Schema Layout by User
 
-### John Doe (`john.doe@company.com`)
+### Jon Snow (`jon.snow@company.com`)
 ```
 SANDBOX_DBT_TRAINING/
-├── JDOE_STAGING/
+├── JSNOW_STAGING/
 │   ├── STG_CUSTOMERS
 │   ├── STG_ORDERS
 │   └── STG_PRODUCTS
-├── JDOE_INTERMEDIATE/
+├── JSNOW_INTERMEDIATE/
 │   ├── INT_ORDERS_WITH_PAYMENTS
 │   └── INT_CUSTOMERS__ORDER_SUMMARY
-└── JDOE_MARTS/
+└── JSNOW_MARTS/
     ├── DIM_CUSTOMERS
     └── FCT_ORDERS
 ```
 
-### Jane Smith (`jane.smith@company.com`)
+### Sara Glacier (`sara.glacier@company.com`)
 ```
 SANDBOX_DBT_TRAINING/
-├── JSMITH_STAGING/
+├── SGLACIER_STAGING/
 │   ├── STG_CUSTOMERS
 │   ├── STG_ORDERS
 │   └── STG_PRODUCTS
-├── JSMITH_INTERMEDIATE/
+├── SGLACIER_INTERMEDIATE/
 │   ├── INT_ORDERS_WITH_PAYMENTS
 │   └── INT_CUSTOMERS__ORDER_SUMMARY
-└── JSMITH_MARTS/
+└── SGLACIER_MARTS/
     ├── DIM_CUSTOMERS
     └── FCT_ORDERS
 ```
@@ -151,7 +151,7 @@ SANDBOX_DBT_TRAINING/
 ✅ **Shared Database**: Everyone uses `SANDBOX_DBT_TRAINING`
 ✅ **Shared Seeds**: All users can load the same seed data
 ✅ **Clean Naming**: Easy to identify who owns which schemas
-✅ **Easy Cleanup**: Drop all schemas for a user with `DROP SCHEMA JDOE_*`
+✅ **Easy Cleanup**: Drop all schemas for a user with `DROP SCHEMA JSNOW_*`
 
 ---
 
@@ -161,7 +161,7 @@ SANDBOX_DBT_TRAINING/
 
 ```sql
 -- Show all your schemas
-SHOW SCHEMAS LIKE 'JDOE_%' IN DATABASE SANDBOX_DBT_TRAINING;
+SHOW SCHEMAS LIKE 'JSNOW_%' IN DATABASE SANDBOX_DBT_TRAINING;
 ```
 
 ### Find All Your Models
@@ -174,7 +174,7 @@ SELECT
   table_name,
   table_type
 FROM SANDBOX_DBT_TRAINING.information_schema.tables
-WHERE table_schema LIKE 'JDOE_%'
+WHERE table_schema LIKE 'JSNOW_%'
 ORDER BY table_schema, table_name;
 ```
 
@@ -183,12 +183,12 @@ ORDER BY table_schema, table_name;
 ```sql
 -- Verify a staging model
 SELECT * 
-FROM SANDBOX_DBT_TRAINING.JDOE_STAGING.STG_CUSTOMERS
+FROM SANDBOX_DBT_TRAINING.JSNOW_STAGING.STG_CUSTOMERS
 LIMIT 5;
 
 -- Verify a mart model
 SELECT * 
-FROM SANDBOX_DBT_TRAINING.JDOE_MARTS.DIM_CUSTOMERS
+FROM SANDBOX_DBT_TRAINING.JSNOW_MARTS.DIM_CUSTOMERS
 LIMIT 5;
 ```
 
@@ -198,7 +198,7 @@ LIMIT 5;
 
 ### Issue: Schemas created with wrong prefix
 
-**Example**: Schemas are `_STAGING` instead of `JDOE_STAGING`
+**Example**: Schemas are `_STAGING` instead of `JSNOW_STAGING`
 
 **Cause**: Username parsing failed
 
@@ -206,9 +206,9 @@ LIMIT 5;
 
 ```yaml
 # ✅ GOOD - will work
-user: john.doe@company.com
-user: john.doe
-user: JOHN.DOE
+user: jon.snow@company.com
+user: jon.snow
+user: JON.SNOW
 
 # ❌ BAD - won't parse correctly
 user: johndoe  # No separator between first/last
@@ -228,8 +228,8 @@ user: j.d      # Too short
 **Solution**: Use only first and last name:
 
 ```yaml
-# Instead of: john.middle.doe@company.com
-# Use: john.doe@company.com
+# Instead of: jon.middle.snow@company.com
+# Use: jon.snow@company.com
 ```
 
 ---
@@ -244,15 +244,15 @@ user: j.d      # Too short
 -- You should see only your schemas
 SHOW SCHEMAS IN DATABASE SANDBOX_DBT_TRAINING;
 
--- Expected: JDOE_STAGING, JDOE_MARTS, etc.
--- NOT: JSMITH_STAGING, BJOHNSON_MARTS, etc.
+-- Expected: JSNOW_STAGING, JSNOW_MARTS, etc.
+-- NOT: SGLACIER_STAGING, BJOHNSON_MARTS, etc.
 ```
 
 **Exception**: If you need to view another user's work (for teaching/review):
 
 ```sql
 -- Requires appropriate grants
-SELECT * FROM SANDBOX_DBT_TRAINING.JSMITH_STAGING.STG_CUSTOMERS;
+SELECT * FROM SANDBOX_DBT_TRAINING.SGLACIER_STAGING.STG_CUSTOMERS;
 ```
 
 ---
@@ -296,13 +296,13 @@ Remove all schemas for a specific user:
 
 ```sql
 -- List schemas for user
-SHOW SCHEMAS LIKE 'JDOE_%' IN DATABASE SANDBOX_DBT_TRAINING;
+SHOW SCHEMAS LIKE 'JSNOW_%' IN DATABASE SANDBOX_DBT_TRAINING;
 
 -- Drop schemas (run for each schema)
-DROP SCHEMA IF EXISTS SANDBOX_DBT_TRAINING.JDOE_STAGING CASCADE;
-DROP SCHEMA IF EXISTS SANDBOX_DBT_TRAINING.JDOE_INTERMEDIATE CASCADE;
-DROP SCHEMA IF EXISTS SANDBOX_DBT_TRAINING.JDOE_MARTS CASCADE;
-DROP SCHEMA IF EXISTS SANDBOX_DBT_TRAINING.JDOE_PUBLIC CASCADE;
+DROP SCHEMA IF EXISTS SANDBOX_DBT_TRAINING.JSNOW_STAGING CASCADE;
+DROP SCHEMA IF EXISTS SANDBOX_DBT_TRAINING.JSNOW_INTERMEDIATE CASCADE;
+DROP SCHEMA IF EXISTS SANDBOX_DBT_TRAINING.JSNOW_MARTS CASCADE;
+DROP SCHEMA IF EXISTS SANDBOX_DBT_TRAINING.JSNOW_PUBLIC CASCADE;
 ```
 
 Or with a stored procedure (requires ACCOUNTADMIN):
@@ -333,7 +333,7 @@ $$
 $$;
 
 -- Usage
-CALL cleanup_user_schemas('JDOE');
+CALL cleanup_user_schemas('JSNOW');
 ```
 
 ---
@@ -348,7 +348,7 @@ CALL cleanup_user_schemas('JDOE');
 
 ### Q: What if two users have the same first initial + last name?
 
-**A**: Very rare, but if it happens (e.g., John Smith and Jane Smith both → `JSMITH`):
+**A**: Very rare, but if it happens (e.g., Sara Glacier and Sam Glacier both → `SGLACIER`):
 - Add middle initial to username: `john.m.smith@company.com`
 - Or use a unique identifier: `john.smith1@company.com`
 
@@ -366,7 +366,7 @@ You'll have full control but won't share seed data with other users.
 
 ### Q: Do I need to create my schemas manually?
 
-**A**: No! dbt automatically creates schemas when you run `dbt run`. The first time you build models, dbt will create `JDOE_STAGING`, `JDOE_MARTS`, etc. for you.
+**A**: No! dbt automatically creates schemas when you run `dbt run`. The first time you build models, dbt will create `JSNOW_STAGING`, `JSNOW_MARTS`, etc. for you.
 
 ---
 
@@ -377,7 +377,7 @@ You'll have full control but won't share seed data with other users.
 1. **Configure profile**:
    ```bash
    vi ~/.dbt/profiles.yml
-   # Set user: john.doe@company.com
+   # Set user: jon.snow@company.com
    # Set database: SANDBOX_DBT_TRAINING
    ```
 
@@ -394,8 +394,8 @@ You'll have full control but won't share seed data with other users.
 
 4. **Verify in Snowflake**:
    ```sql
-   SHOW SCHEMAS LIKE 'JDOE_%';
-   SELECT * FROM SANDBOX_DBT_TRAINING.JDOE_STAGING.STG_CUSTOMERS LIMIT 5;
+   SHOW SCHEMAS LIKE 'JSNOW_%';
+   SELECT * FROM SANDBOX_DBT_TRAINING.JSNOW_STAGING.STG_CUSTOMERS LIMIT 5;
    ```
 
 5. **Build everything**:
@@ -409,16 +409,16 @@ You'll have full control but won't share seed data with other users.
      table_schema,
      count(*) as table_count
    FROM SANDBOX_DBT_TRAINING.information_schema.tables
-   WHERE table_schema LIKE 'JDOE_%'
+   WHERE table_schema LIKE 'JSNOW_%'
    GROUP BY table_schema
    ORDER BY table_schema;
    ```
 
 **Expected output**:
 ```
-JDOE_INTERMEDIATE | 3
-JDOE_MARTS        | 2
-JDOE_STAGING      | 5
+JSNOW_INTERMEDIATE | 3
+JSNOW_MARTS        | 2
+JSNOW_STAGING      | 5
 ```
 
 ---

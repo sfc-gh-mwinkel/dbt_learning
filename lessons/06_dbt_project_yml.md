@@ -19,7 +19,8 @@ By the end of this lesson you will be able to:
 
 **Catch up:** If you're missing prerequisites, run:
 ```bash
-./scripts/catch_up.sh 6
+python run.py catchup 6
+# Or: ./scripts/catch_up.sh 6
 ```
 
 ---

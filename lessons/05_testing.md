@@ -8,7 +8,8 @@
 
 **Catch up:** If you're missing prerequisites, run:
 ```bash
-./scripts/catch_up.sh 5
+python run.py catchup 5
+# Or: ./scripts/catch_up.sh 5
 ```
 
 If you're starting fresh or need to reset:
@@ -192,9 +193,9 @@ When a test fails, you need to understand _what_ data is causing the failure. Th
 The test creates a view in your `<user>_DBT_TEST__AUDIT` schema. Query it:
 
 ```sql
--- Replace MWINKEL with your user prefix
+-- Replace JSNOW with your user prefix
 SELECT *
-FROM DBT_LEARNING.MWINKEL_DBT_TEST__AUDIT.ASSERT_ORDER_AMOUNT_MATCHES_LINE_ITEMS
+FROM DBT_LEARNING.JSNOW_DBT_TEST__AUDIT.ASSERT_ORDER_AMOUNT_MATCHES_LINE_ITEMS
 ORDER BY difference DESC
 LIMIT 5;
 ```
@@ -204,17 +205,17 @@ LIMIT 5;
 Copy the SQL from `tests/assert_order_amount_matches_line_items.sql` and run it in Snowflake, replacing the `{{ ref() }}` macros:
 
 ```sql
--- Example for user MWINKEL - adjust schema names for your user prefix
+-- Example for user JSNOW - adjust schema names for your user prefix
 SELECT
     o.order_id,
     o.order_amount,
     oi.line_items_total,
     ABS(o.order_amount - oi.line_items_total) as difference,
     ROUND(ABS(o.order_amount - oi.line_items_total) / o.order_amount * 100, 2) as pct_diff
-FROM DBT_LEARNING.MWINKEL_MARTS.fct_orders o
+FROM DBT_LEARNING.JSNOW_MARTS.fct_orders o
 INNER JOIN (
     SELECT order_id, SUM(line_total) as line_items_total
-    FROM DBT_LEARNING.MWINKEL_INTERMEDIATE.int_order_items_with_products
+    FROM DBT_LEARNING.JSNOW_INTERMEDIATE.int_order_items_with_products
     GROUP BY order_id
 ) oi ON o.order_id = oi.order_id
 WHERE ABS(o.order_amount - oi.line_items_total) > 0.01
@@ -243,7 +244,7 @@ SELECT
     order_id,
     SUM(line_total) as correct_amount,
     COUNT(*) as item_count
-FROM DBT_LEARNING.MWINKEL_INTERMEDIATE.int_order_items_with_products
+FROM DBT_LEARNING.JSNOW_INTERMEDIATE.int_order_items_with_products
 GROUP BY order_id
 ORDER BY order_id;
 ```

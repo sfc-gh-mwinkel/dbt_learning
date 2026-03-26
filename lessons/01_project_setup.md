@@ -19,7 +19,8 @@ By the end of this lesson you will be able to:
 
 **Catch up:** If you need the seed files copied:
 ```bash
-./scripts/catch_up.sh 1
+python run.py catchup 1
+# Or: ./scripts/catch_up.sh 1
 ```
 
 Verify your install:
@@ -130,7 +131,7 @@ sources:
 
 > **Key concept:** The `source()` function in dbt points to tables that exist outside of your dbt project. It enables lineage tracking, freshness checks, and documentation.
 > 
-> **Note:** We use `{{ generate_schema_name('raw') }}` to ensure the source points to your user-specific raw schema (e.g., `MWINKEL_RAW`). This matches how the generate_schema_name macro creates schemas for seeds. The macro itself is explained in detail in Lesson 8 — for now, just know it creates user-specific schemas like `JDOE_RAW` based on your Snowflake username.
+> **Note:** We use `{{ generate_schema_name('raw') }}` to ensure the source points to your user-specific raw schema (e.g., `JSNOW_RAW`). This matches how the generate_schema_name macro creates schemas for seeds. The macro itself is explained in detail in Lesson 8 — for now, just know it creates user-specific schemas like `JSNOW_RAW` based on your Snowflake username.
 
 ---
 

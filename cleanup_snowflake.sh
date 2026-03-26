@@ -4,7 +4,7 @@
 set -e
 
 # Check if connection name is provided
-CONNECTION=${1:-snowsecure_deploy}
+CONNECTION=${1:-default}
 
 echo "🗑️  Cleaning up Snowflake artifacts..."
 echo "  Using connection: $CONNECTION"
@@ -22,7 +22,7 @@ fi
 echo "  Current user: $USER"
 
 # Extract prefix (first initial + last name)
-# Handle different formats: john.doe@company.com, JOHN.DOE, john_doe
+# Handle different formats: jon.snow@company.com, JON.SNOW, jon_snow
 PREFIX=""
 if [[ "$USER" == *"@"* ]]; then
     USER_PART="${USER%%@*}"  # Remove @company.com

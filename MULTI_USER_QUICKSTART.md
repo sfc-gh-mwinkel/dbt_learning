@@ -19,7 +19,7 @@ dbt_learning:
     dev:
       type: snowflake
       account: YOUR_ACCOUNT
-      user: john.doe@company.com  # ← Your actual email
+      user: jon.snow@company.com  # ← Your actual email
       authenticator: externalbrowser
       role: YOUR_ROLE
       database: SANDBOX_DBT_TRAINING  # ← Shared database
@@ -63,10 +63,10 @@ dbt run --select stg_customers
 
 **In Snowflake**:
 ```sql
--- Check your schemas (replace JDOE with your prefix)
-SHOW SCHEMAS LIKE 'JDOE_%' IN DATABASE SANDBOX_DBT_TRAINING;
+-- Check your schemas (replace JSNOW with your prefix)
+SHOW SCHEMAS LIKE 'JSNOW_%' IN DATABASE SANDBOX_DBT_TRAINING;
 
--- Expected: JDOE_STAGING, JDOE_MARTS, etc.
+-- Expected: JSNOW_STAGING, JSNOW_MARTS, etc.
 ```
 
 ---
@@ -75,34 +75,34 @@ SHOW SCHEMAS LIKE 'JDOE_%' IN DATABASE SANDBOX_DBT_TRAINING;
 
 | Your User | Parsing | Prefix | Example Schema |
 |-----------|---------|--------|----------------|
-| `john.doe@company.com` | j + doe | `JDOE` | `JDOE_STAGING` |
-| `jane.smith@company.com` | j + smith | `JSMITH` | `JSMITH_MARTS` |
+| `jon.snow@company.com` | j + snow | `JSNOW` | `JSNOW_STAGING` |
+| `sara.glacier@company.com` | s + glacier | `SGLACIER` | `SGLACIER_MARTS` |
 | `bob_johnson` | b + johnson | `BJOHNSON` | `BJOHNSON_INTERMEDIATE` |
 
 ---
 
 ## Full Example
 
-**Your config**: `user: john.doe@company.com`
+**Your config**: `user: jon.snow@company.com`
 
 **Your schemas**:
 ```
 SANDBOX_DBT_TRAINING/
-├── JDOE_STAGING/
+├── JSNOW_STAGING/
 │   ├── STG_CUSTOMERS
 │   ├── STG_ORDERS
 │   └── STG_PRODUCTS
-├── JDOE_INTERMEDIATE/
+├── JSNOW_INTERMEDIATE/
 │   └── INT_ORDERS_WITH_PAYMENTS
-└── JDOE_MARTS/
+└── JSNOW_MARTS/
     ├── DIM_CUSTOMERS
     └── FCT_ORDERS
 ```
 
 **Query your models**:
 ```sql
-SELECT * FROM SANDBOX_DBT_TRAINING.JDOE_STAGING.STG_CUSTOMERS;
-SELECT * FROM SANDBOX_DBT_TRAINING.JDOE_MARTS.DIM_CUSTOMERS;
+SELECT * FROM SANDBOX_DBT_TRAINING.JSNOW_STAGING.STG_CUSTOMERS;
+SELECT * FROM SANDBOX_DBT_TRAINING.JSNOW_MARTS.DIM_CUSTOMERS;
 ```
 
 ---

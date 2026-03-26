@@ -1,169 +1,148 @@
-# Checkpoint validation script for dbt Learning Platform
+# check_lesson_prerequisites.ps1 - Checkpoint validation for dbt Learning Platform
 # Usage: .\scripts\check_lesson_prerequisites.ps1 <lesson_number>
-
-param(
-    [Parameter(Mandatory=$true)]
-    [int]$Lesson
-)
-
 $ErrorActionPreference = "Stop"
-$ProjectRoot = Split-Path -Parent $PSScriptRoot
 
-Write-Host "🔍 Checking prerequisites for Lesson $Lesson..." -ForegroundColor Cyan
-Write-Host ""
+$Lesson = $args[0]
+if (-not $Lesson) {
+    Write-Host "Usage: .\scripts\check_lesson_prerequisites.ps1 <1-10>" -ForegroundColor Yellow
+    exit 1
+}
 
-$AllChecksPassed = $true
+$ProjectRoot = Split-Path -Parent (Split-Path -Parent $MyInvocation.MyCommand.Definition)
+$AllPassed = $true
 
 function Check-File {
-    param(
-        [string]$File,
-        [string]$Description
-    )
-    
-    $FullPath = Join-Path $ProjectRoot $File
+    param([string]$File, [string]$Description)
+    $FullPath = Join-Path $script:ProjectRoot $File
     if (Test-Path $FullPath) {
-        Write-Host "✓ $Description" -ForegroundColor Green
+        Write-Host "  + $Description" -ForegroundColor Green
         return $true
     } else {
-        Write-Host "✗ $Description" -ForegroundColor Red
-        Write-Host "   Missing: $File"
+        Write-Host "  x $Description" -ForegroundColor Red
+        Write-Host "    Missing: $File"
+        $script:AllPassed = $false
         return $false
     }
 }
 
 function Check-Model {
-    param(
-        [string]$Model,
-        [string]$Description
-    )
-    
-    $FullPath = Join-Path $ProjectRoot "models\$Model"
+    param([string]$Model, [string]$Description)
+    $File = "models\$Model"
+    $FullPath = Join-Path $script:ProjectRoot $File
     if (Test-Path $FullPath) {
-        Write-Host "✓ $Description" -ForegroundColor Green
+        Write-Host "  + $Description" -ForegroundColor Green
         return $true
     } else {
-        Write-Host "✗ $Description" -ForegroundColor Red
-        Write-Host "   Missing: models\$Model"
-        Write-Host "   Run: Copy-Item assets\models\$Model models\$Model"
+        Write-Host "  x $Description" -ForegroundColor Red
+        Write-Host "    Missing: models\$Model"
+        Write-Host "    Run: Copy-Item assets\models\$Model models\$Model"
+        $script:AllPassed = $false
         return $false
     }
 }
 
 function Check-Seed {
-    param(
-        [string]$Seed,
-        [string]$Description
-    )
-    
-    $FullPath = Join-Path $ProjectRoot "seeds\$Seed"
+    param([string]$Seed, [string]$Description)
+    $File = "seeds\$Seed"
+    $FullPath = Join-Path $script:ProjectRoot $File
     if (Test-Path $FullPath) {
-        Write-Host "✓ $Description" -ForegroundColor Green
+        Write-Host "  + $Description" -ForegroundColor Green
         return $true
     } else {
-        Write-Host "⚠ $Description" -ForegroundColor Yellow
-        Write-Host "   Missing: seeds\$Seed"
-        Write-Host "   Run: Copy-Item assets\seeds\$Seed seeds\"
+        Write-Host "  ! $Description" -ForegroundColor Yellow
+        Write-Host "    Missing: seeds\$Seed"
+        Write-Host "    Run: Copy-Item assets\seeds\$Seed seeds\"
+        $script:AllPassed = $false
         return $false
     }
 }
 
-switch ($Lesson) {
+Write-Host "Checking prerequisites for Lesson $Lesson..."
+Write-Host ""
+
+switch ([int]$Lesson) {
     1 {
         Write-Host "Lesson 1: Project Setup & First Model"
         Write-Host "======================================="
-        if (!(Check-File "dbt_project.yml" "dbt_project.yml exists")) { $AllChecksPassed = $false }
-        if (!(Check-Seed "customers.csv" "customers.csv seed file")) { $AllChecksPassed = $false }
-        if (!(Check-Seed "orders.csv" "orders.csv seed file")) { $AllChecksPassed = $false }
-        if (!(Check-File "models\staging\sources.yml" "sources.yml configuration")) { $AllChecksPassed = $false }
-        if (!(Check-Model "staging\stg_customers.sql" "stg_customers model")) { $AllChecksPassed = $false }
+        Check-File "dbt_project.yml" "dbt_project.yml exists" | Out-Null
+        Check-Seed "customers.csv" "customers.csv seed file" | Out-Null
+        Check-Seed "orders.csv" "orders.csv seed file" | Out-Null
+        Check-File "models\staging\sources.yml" "sources.yml configuration" | Out-Null
+        Check-Model "staging\stg_customers.sql" "stg_customers model" | Out-Null
     }
-    
     2 {
         Write-Host "Lesson 2: Understanding YML Files"
         Write-Host "=================================="
-        if (!(Check-File "models\staging\sources.yml" "sources.yml with tests")) { $AllChecksPassed = $false }
-        if (!(Check-File "models\staging\schema.yml" "schema.yml for staging models")) { $AllChecksPassed = $false }
-        if (!(Check-Model "staging\stg_customers.sql" "stg_customers model")) { $AllChecksPassed = $false }
-        if (!(Check-Model "staging\stg_orders.sql" "stg_orders model")) { $AllChecksPassed = $false }
+        Check-File "models\staging\sources.yml" "sources.yml with tests" | Out-Null
+        Check-File "models\staging\schema.yml" "schema.yml for staging models" | Out-Null
+        Check-Model "staging\stg_customers.sql" "stg_customers model" | Out-Null
+        Check-Model "staging\stg_orders.sql" "stg_orders model" | Out-Null
     }
-    
     3 {
         Write-Host "Lesson 3: The Staging Layer"
         Write-Host "============================"
-        if (!(Check-Seed "customers.csv" "customers.csv")) { $AllChecksPassed = $false }
-        if (!(Check-Seed "orders.csv" "orders.csv")) { $AllChecksPassed = $false }
-        if (!(Check-Seed "products.csv" "products.csv")) { $AllChecksPassed = $false }
-        if (!(Check-Seed "order_items.csv" "order_items.csv")) { $AllChecksPassed = $false }
-        if (!(Check-Seed "payments.csv" "payments.csv")) { $AllChecksPassed = $false }
-        if (!(Check-Model "staging\stg_customers.sql" "stg_customers")) { $AllChecksPassed = $false }
-        if (!(Check-Model "staging\stg_orders.sql" "stg_orders")) { $AllChecksPassed = $false }
-        if (!(Check-Model "staging\stg_products.sql" "stg_products")) { $AllChecksPassed = $false }
-        if (!(Check-Model "staging\stg_order_items.sql" "stg_order_items")) { $AllChecksPassed = $false }
-        if (!(Check-Model "staging\stg_payments.sql" "stg_payments")) { $AllChecksPassed = $false }
+        Check-Seed "customers.csv" "customers.csv" | Out-Null
+        Check-Seed "orders.csv" "orders.csv" | Out-Null
+        Check-Seed "products.csv" "products.csv" | Out-Null
+        Check-Seed "order_items.csv" "order_items.csv" | Out-Null
+        Check-Seed "payments.csv" "payments.csv" | Out-Null
+        Check-Model "staging\stg_customers.sql" "stg_customers" | Out-Null
+        Check-Model "staging\stg_orders.sql" "stg_orders" | Out-Null
+        Check-Model "staging\stg_products.sql" "stg_products" | Out-Null
+        Check-Model "staging\stg_order_items.sql" "stg_order_items" | Out-Null
+        Check-Model "staging\stg_payments.sql" "stg_payments" | Out-Null
     }
-    
     4 {
         Write-Host "Lesson 4: Intermediate & Mart Models"
         Write-Host "====================================="
-        # Check all staging models exist
-        if (!(Check-Model "staging\stg_customers.sql" "stg_customers")) { $AllChecksPassed = $false }
-        if (!(Check-Model "staging\stg_orders.sql" "stg_orders")) { $AllChecksPassed = $false }
-        if (!(Check-Model "staging\stg_products.sql" "stg_products")) { $AllChecksPassed = $false }
-        if (!(Check-Model "staging\stg_order_items.sql" "stg_order_items")) { $AllChecksPassed = $false }
-        if (!(Check-Model "staging\stg_payments.sql" "stg_payments")) { $AllChecksPassed = $false }
-        # Check intermediate models
-        if (!(Check-Model "intermediate\int_orders_with_payments.sql" "int_orders_with_payments")) { $AllChecksPassed = $false }
-        if (!(Check-Model "intermediate\int_order_items_with_products.sql" "int_order_items_with_products")) { $AllChecksPassed = $false }
-        if (!(Check-Model "intermediate\int_customers__order_summary.sql" "int_customers__order_summary")) { $AllChecksPassed = $false }
-        # Check mart models
-        if (!(Check-Model "marts\dim_customers.sql" "dim_customers")) { $AllChecksPassed = $false }
-        if (!(Check-Model "marts\fct_orders.sql" "fct_orders")) { $AllChecksPassed = $false }
+        Check-Model "staging\stg_customers.sql" "stg_customers" | Out-Null
+        Check-Model "staging\stg_orders.sql" "stg_orders" | Out-Null
+        Check-Model "staging\stg_products.sql" "stg_products" | Out-Null
+        Check-Model "staging\stg_order_items.sql" "stg_order_items" | Out-Null
+        Check-Model "staging\stg_payments.sql" "stg_payments" | Out-Null
+        Check-Model "intermediate\int_orders_with_payments.sql" "int_orders_with_payments" | Out-Null
+        Check-Model "intermediate\int_order_items_with_products.sql" "int_order_items_with_products" | Out-Null
+        Check-Model "intermediate\int_customers__order_summary.sql" "int_customers__order_summary" | Out-Null
+        Check-Model "marts\dim_customers.sql" "dim_customers" | Out-Null
+        Check-Model "marts\fct_orders.sql" "fct_orders" | Out-Null
     }
-    
     5 {
         Write-Host "Lesson 5: Testing & Data Quality"
         Write-Host "================================="
-        if (!(Check-File "packages.yml" "packages.yml with dbt_utils")) { $AllChecksPassed = $false }
-        if (!(Check-Model "marts\dim_customers.sql" "dim_customers")) { $AllChecksPassed = $false }
-        if (!(Check-Model "marts\fct_orders.sql" "fct_orders")) { $AllChecksPassed = $false }
-        if (!(Check-File "models\marts\schema.yml" "schema.yml with tests")) { $AllChecksPassed = $false }
+        Check-File "packages.yml" "packages.yml with dbt_utils" | Out-Null
+        Check-Model "marts\dim_customers.sql" "dim_customers" | Out-Null
+        Check-Model "marts\fct_orders.sql" "fct_orders" | Out-Null
+        Check-File "models\marts\schema.yml" "schema.yml with tests" | Out-Null
     }
-    
     6 {
         Write-Host "Lesson 6: dbt_project.yml Deep Dive"
         Write-Host "===================================="
-        if (!(Check-File "dbt_project.yml" "dbt_project.yml configured")) { $AllChecksPassed = $false }
+        Check-File "dbt_project.yml" "dbt_project.yml configured" | Out-Null
     }
-    
     7 {
         Write-Host "Lesson 7: Snapshots & SCD Type 2"
         Write-Host "================================="
-        if (!(Check-Seed "orders.csv" "orders.csv seed")) { $AllChecksPassed = $false }
-        if (!(Check-File "models\staging\sources.yml" "sources.yml")) { $AllChecksPassed = $false }
+        Check-Seed "orders.csv" "orders.csv seed" | Out-Null
+        Check-File "models\staging\sources.yml" "sources.yml" | Out-Null
     }
-    
     8 {
         Write-Host "Lesson 8: Writing Macros"
         Write-Host "========================"
-        if (!(Check-Model "marts\dim_customers.sql" "dim_customers")) { $AllChecksPassed = $false }
+        Check-Model "marts\dim_customers.sql" "dim_customers" | Out-Null
     }
-    
     9 {
         Write-Host "Lesson 9: Documentation & dbt docs"
         Write-Host "==================================="
-        if (!(Check-File "models\marts\schema.yml" "schema.yml with descriptions")) { $AllChecksPassed = $false }
-        if (!(Check-Model "marts\dim_customers.sql" "dim_customers")) { $AllChecksPassed = $false }
-        if (!(Check-Model "marts\fct_orders.sql" "fct_orders")) { $AllChecksPassed = $false }
+        Check-File "models\marts\schema.yml" "schema.yml with descriptions" | Out-Null
+        Check-Model "marts\dim_customers.sql" "dim_customers" | Out-Null
+        Check-Model "marts\fct_orders.sql" "fct_orders" | Out-Null
     }
-    
     10 {
         Write-Host "Lesson 10: Graph Operators & dbt build"
         Write-Host "======================================="
-        # All models should exist by now
-        if (!(Check-Model "marts\dim_customers.sql" "dim_customers")) { $AllChecksPassed = $false }
-        if (!(Check-Model "marts\fct_orders.sql" "fct_orders")) { $AllChecksPassed = $false }
+        Check-Model "marts\dim_customers.sql" "dim_customers" | Out-Null
+        Check-Model "marts\fct_orders.sql" "fct_orders" | Out-Null
     }
-    
     default {
         Write-Host "Invalid lesson number: $Lesson" -ForegroundColor Red
         Write-Host "Usage: .\scripts\check_lesson_prerequisites.ps1 <1-10>"
@@ -172,12 +151,12 @@ switch ($Lesson) {
 }
 
 Write-Host ""
-if ($AllChecksPassed) {
-    Write-Host "✓ All prerequisites met! Ready to start Lesson $Lesson." -ForegroundColor Green
+if ($AllPassed) {
+    Write-Host "All prerequisites met! Ready to start Lesson $Lesson." -ForegroundColor Green
     exit 0
 } else {
-    Write-Host "✗ Some prerequisites are missing. Please complete the steps above." -ForegroundColor Red
+    Write-Host "Some prerequisites are missing. Please complete the steps above." -ForegroundColor Red
     Write-Host ""
-    Write-Host "💡 Tip: Run '.\scripts\catch_up.ps1 $Lesson' to automatically copy missing files."
+    Write-Host "Tip: Run '.\scripts\catch_up.ps1 $Lesson' to automatically copy missing files."
     exit 1
 }

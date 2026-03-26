@@ -50,6 +50,16 @@ New-Item -ItemType Directory models\staging\subdirectory -Force  # Create parent
 
 ## Checkpoint & Catch-up Scripts
 
+### Cross-Platform (Recommended)
+
+```bash
+python run.py check 1
+python run.py check 4
+python run.py catchup 1
+python run.py catchup 4
+python run.py          # Interactive menu
+```
+
 ### Check Lesson Prerequisites
 
 **Linux/macOS:**
@@ -220,6 +230,8 @@ If you have Git for Windows installed, you can use Git Bash which supports Linux
 # All Linux/macOS commands work in Git Bash
 cp assets/seeds/customers.csv seeds/
 ./scripts/check_lesson_prerequisites.sh 1
+# Or use run.py which works everywhere:
+python run.py check 1
 ```
 
 ### WSL (Windows Subsystem for Linux)
@@ -230,6 +242,8 @@ For the most native Linux experience on Windows, consider using WSL:
 # After installing WSL, all Linux commands work
 cp assets/seeds/customers.csv seeds/
 ./scripts/check_lesson_prerequisites.sh 1
+# Or use run.py which works everywhere:
+python run.py check 1
 ```
 
 ---

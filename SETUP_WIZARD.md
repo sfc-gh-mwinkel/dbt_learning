@@ -78,7 +78,7 @@ Ask the user for the following information:
 | Setting | Example | How to Find |
 |---------|---------|-------------|
 | Account | `abc12345.us-west-2` | Snowflake URL before `.snowflakecomputing.com` |
-| Username | `JOHN.DOE` | Their Snowflake login username |
+| Username | `JON.SNOW` | Their Snowflake login username |
 | Role | `ACCOUNTADMIN` or custom | Role with CREATE DATABASE/SCHEMA permissions |
 | Warehouse | `COMPUTE_WH` | Any warehouse they have access to |
 | Database | `DBT_LEARNING` | Will be created if doesn't exist |
@@ -112,7 +112,7 @@ dbt_learning:
     dev:
       type: snowflake
       account: <ACCOUNT>           # e.g., abc12345.us-west-2
-      user: <USERNAME>             # e.g., JOHN.DOE or john.doe@company.com
+      user: <USERNAME>             # e.g., JON.SNOW or jon.snow@company.com
       role: <ROLE>                 # e.g., ACCOUNTADMIN
       warehouse: <WAREHOUSE>       # e.g., COMPUTE_WH
       database: DBT_LEARNING
@@ -183,7 +183,7 @@ dbt_learning:
 Then set environment variables:
 ```bash
 export SNOWFLAKE_ACCOUNT="abc12345.us-west-2"
-export SNOWFLAKE_USER="JOHN.DOE"
+export SNOWFLAKE_USER="JON.SNOW"
 export SNOWFLAKE_PASSWORD="your-password"
 export SNOWFLAKE_ROLE="ACCOUNTADMIN"
 export SNOWFLAKE_WAREHOUSE="COMPUTE_WH"
@@ -310,9 +310,9 @@ This project uses a custom `generate_schema_name` macro that creates user-specif
 
 | Username | Schema Prefix | Example Schemas |
 |----------|--------------|-----------------|
-| `JOHN.DOE` | `JDOE_` | `JDOE_RAW`, `JDOE_STAGING`, `JDOE_MARTS` |
-| `jane.smith@company.com` | `JSMITH_` | `JSMITH_RAW`, `JSMITH_STAGING` |
-| `MWINKEL` | `MWINKEL_` | `MWINKEL_RAW`, `MWINKEL_STAGING` |
+| `JON.SNOW` | `JSNOW_` | `JSNOW_RAW`, `JSNOW_STAGING`, `JSNOW_MARTS` |
+| `sara.glacier@company.com` | `SGLACIER_` | `SGLACIER_RAW`, `SGLACIER_STAGING` |
+| `BFROST` | `BFROST_` | `BFROST_RAW`, `BFROST_STAGING` |
 
 This allows multiple users to work in the same database without conflicts.
 
@@ -322,7 +322,7 @@ This allows multiple users to work in the same database without conflicts.
 dbt compile --select stg_customers
 ```
 
-Check the compiled SQL in `target/compiled/` - the FROM clause will show your schema name (e.g., `DBT_LEARNING.JDOE_RAW.customers`).
+Check the compiled SQL in `target/compiled/` - the FROM clause will show your schema name (e.g., `DBT_LEARNING.JSNOW_RAW.customers`).
 
 ---
 
@@ -391,7 +391,8 @@ cat lessons/01_project_setup.md
 
 **Tip**: Run the checkpoint script before each lesson:
 ```bash
-./scripts/check_lesson_prerequisites.sh 1
+python run.py check 1
+# Or: ./scripts/check_lesson_prerequisites.sh 1
 ```
 
 ---

@@ -100,7 +100,8 @@ vi ~/.dbt/profiles.yml
 
 1. Check which models are missing:
    ```bash
-   ./scripts/check_lesson_prerequisites.sh 4
+   python run.py check 4
+   # Or: ./scripts/check_lesson_prerequisites.sh 4
    ```
 
 2. Either:
@@ -111,7 +112,8 @@ vi ~/.dbt/profiles.yml
      ```
    - **Option C**: Use catch-up script:
      ```bash
-     ./scripts/catch_up.sh 4
+     python run.py catchup 4
+     # Or: ./scripts/catch_up.sh 4
      ```
 
 ---
@@ -441,12 +443,14 @@ If you're still stuck after trying these solutions:
 
 2. **Verify prerequisites**:
    ```bash
-   ./scripts/check_lesson_prerequisites.sh <lesson_number>
+   python run.py check <lesson_number>
+   # Or: ./scripts/check_lesson_prerequisites.sh <lesson_number>
    ```
 
 3. **Catch up to current lesson**:
    ```bash
-   ./scripts/catch_up.sh <lesson_number>
+   python run.py catchup <lesson_number>
+   # Or: ./scripts/catch_up.sh <lesson_number>
    ```
 
 4. **Check compiled SQL**:
@@ -466,7 +470,8 @@ If you're still stuck after trying these solutions:
 
 1. **Always run checkpoint before lessons**:
    ```bash
-   ./scripts/check_lesson_prerequisites.sh 4
+   python run.py check 4
+   # Or: ./scripts/check_lesson_prerequisites.sh 4
    ```
 
 2. **Use `dbt build` instead of separate run + test**:
