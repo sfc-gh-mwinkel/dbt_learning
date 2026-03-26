@@ -23,7 +23,40 @@
 python3 --version
 ```
 
-**Required**: Python 3.9 or higher. If not installed, guide user to install Python first.
+**Required**: Python 3.9 or higher.
+
+If Python is not installed or the version is too old, install it using the instructions below for your platform, then re-run the version check.
+
+#### Installing Python
+
+**macOS** (Homebrew):
+```bash
+brew install python@3.12
+```
+
+**macOS** (official installer): Download from [python.org/downloads](https://www.python.org/downloads/)
+
+**Windows** (winget):
+```powershell
+winget install Python.Python.3.12
+```
+
+**Windows** (official installer): Download from [python.org/downloads](https://www.python.org/downloads/) — check "Add Python to PATH" during install.
+
+**Ubuntu/Debian**:
+```bash
+sudo apt update && sudo apt install python3 python3-venv python3-pip
+```
+
+**Fedora/RHEL**:
+```bash
+sudo dnf install python3 python3-pip
+```
+
+After installing, open a **new terminal** and verify:
+```bash
+python3 --version  # Should show 3.9+
+```
 
 ### Step 1.2: Create Virtual Environment
 
