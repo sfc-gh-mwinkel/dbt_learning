@@ -205,17 +205,19 @@ LIMIT 5;
 **Solution**: Check your `profiles.yml` user field:
 
 ```yaml
-# ✅ GOOD - will work
+# ✅ GOOD - first.last format (recommended)
 user: jon.snow@company.com
 user: jon.snow
 user: JON.SNOW
 
-# ❌ BAD - won't parse correctly
-user: johndoe  # No separator between first/last
-user: j.d      # Too short
+# ✅ OK - no separator (full username becomes prefix, e.g., JSNOW_STAGING)
+user: JSNOW
+
+# ⚠️ LESS IDEAL - may produce unexpected prefixes
+user: j.d      # Too short — prefix will be "JD"
 ```
 
-**Fix**: Use format `first.last@domain.com` or `first.last`
+**Recommended**: Use format `first.last@domain.com` or `first.last` for the clearest prefix. No-separator usernames work but the full username becomes the prefix.
 
 ---
 
