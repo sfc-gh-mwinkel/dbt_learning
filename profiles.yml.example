@@ -7,10 +7,10 @@ dbt_learning:
       
       # CRITICAL: Use your actual name in one of these formats:
       #   - Okta/SSO email: john.doe@company.com
-      #   - Snowflake username: john.doe
+      #   - Snowflake username: john.snow
       #   - First.Last format: jane.smith
       # This is used to generate your unique schema prefix (e.g., JDOE_STAGING)
-      user: YOUR_EMAIL             # Example: john.doe@company.com
+      user: YOUR_EMAIL             # Example: john.snow@company.com
       
       authenticator: externalbrowser
       role: YOUR_ROLE
