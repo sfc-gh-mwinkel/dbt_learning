@@ -194,7 +194,7 @@ This previews the first rows of your model without leaving the terminal.
 1. Copy `assets/seeds/products.csv` into `seeds/` and run `dbt seed` again
 2. Add a `products` table entry to your `sources.yml`
 3. Create `models/staging/stg_products.sql` that selects from `{{ source('raw', 'products') }}` and casts `price` to `decimal(10, 2)`
-4. Run `dbt run --select stg_products` and verify with `dbt show`
+4. Run `dbt run --select stg_products` and verify with `dbt show --select stg_products`
 
 ---
 
