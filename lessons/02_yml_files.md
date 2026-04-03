@@ -49,7 +49,7 @@ version: 2
 sources:
   - name: raw
     description: "Raw seed data loaded via dbt seed"
-    schema: "{{ target.schema }}_raw"
+    schema: "{{ env_var('DBT_USER_PREFIX', target.user | upper) }}_RAW"
     tables:
       - name: customers
         description: "Raw customer records"
@@ -81,6 +81,8 @@ sources:
               - accepted_values:
                   values: ['completed', 'pending', 'shipped', 'returned', 'cancelled']
 ```
+
+> **Note:** `env_var('DBT_USER_PREFIX', target.user | upper)` reads an optional environment variable. If `DBT_USER_PREFIX` is not set, it falls back to your Snowflake username uppercased (e.g., `MWINKEL_RAW`). See Lesson 1 for the full explanation.
 
 Run the source tests:
 

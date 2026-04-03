@@ -14,6 +14,7 @@ $ProjectRoot = Split-Path -Parent $MyInvocation.MyCommand.Definition
 $IgnoreFiles = @(
     ".gitkeep"
     "generate_schema_name.sql"
+    "get_user_prefix.sql"
     # --- Add client-specific files below ---
     # "client_masking_policy.sql"
     # "custom_audit_log.sql"

@@ -121,7 +121,7 @@ version: 2
 sources:
   - name: raw                              # Logical name you'll use in source() calls
     description: "Raw seed data loaded via dbt seed"
-    schema: "{{ generate_schema_name('raw') }}"      # Points to your user-specific raw schema (e.g., JDOE_RAW)
+    schema: "{{ env_var('DBT_USER_PREFIX', target.user | upper) }}_RAW"
     tables:
       - name: customers                    # Must match the actual table name in Snowflake
         description: "Raw customer records"
@@ -131,7 +131,7 @@ sources:
 
 > **Key concept:** The `source()` function in dbt points to tables that exist outside of your dbt project. It enables lineage tracking, freshness checks, and documentation.
 > 
-> **Note:** We use `{{ generate_schema_name('raw') }}` to ensure the source points to your user-specific raw schema (e.g., `JSNOW_RAW`). This matches how the generate_schema_name macro creates schemas for seeds. The macro itself is explained in detail in Lesson 8 — for now, just know it creates user-specific schemas like `JSNOW_RAW` based on your Snowflake username.
+> **Note:** The `env_var('DBT_USER_PREFIX', target.user | upper)` pattern reads an optional environment variable `DBT_USER_PREFIX`. If it's not set, it falls back to your Snowflake username (`target.user`) uppercased — producing schemas like `MWINKEL_RAW`. This keeps each learner's raw data isolated in a shared database. User-defined macros cannot be called from YAML files (only built-in Jinja globals like `env_var` and `target` are available there), which is why sources use this pattern directly.
 
 ---
 
@@ -209,7 +209,7 @@ This previews the first rows of your model without leaving the terminal.
 | `dbt run` | Builds models into your warehouse |
 | `dbt show` | Previews model output in the terminal |
 
-> **Note:** You may notice your models are created in schemas with your username prefix (e.g., `JDOE_STAGING` instead of just `STAGING`). This is controlled by a `generate_schema_name` macro included in the project. This behavior will be explained in detail in Lesson 8, but it's active from the start to ensure consistent schema naming throughout the lessons.
+> **Note:** You may notice your models are created in schemas with your username prefix (e.g., `MWINKEL_STAGING` instead of just `STAGING`). This is controlled by two macros included in the project — `get_user_prefix` and `generate_schema_name` — which are explained in detail in Lesson 8. They are active from the start to ensure consistent schema naming throughout the lessons.
 
 ---
 

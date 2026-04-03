@@ -16,6 +16,7 @@ PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 IGNORE_FILES=(
     ".gitkeep"
     "generate_schema_name.sql"
+    "get_user_prefix.sql"
     # --- Add client-specific files below ---
     # "client_masking_policy.sql"
     # "custom_audit_log.sql"

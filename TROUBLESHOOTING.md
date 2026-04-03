@@ -354,8 +354,9 @@ select * from {{ ref('stg_orders') }}
 
 **Solution**:
 
-1. Copy the override macro:
+1. Copy the override macros:
    ```bash
+   cp assets/macros/get_user_prefix.sql macros/
    cp assets/macros/generate_schema_name.sql macros/
    ```
 
@@ -370,6 +371,10 @@ select * from {{ ref('stg_orders') }}
    -- Should show: STAGING
    -- NOT: PUBLIC_STAGING
    ```
+
+### Note: `DBT_USER_PREFIX` environment variable
+
+The `sources.yml` schema field uses `env_var('DBT_USER_PREFIX', target.user | upper)`. The second argument is the default — if `DBT_USER_PREFIX` is not set in your environment, it automatically falls back to your Snowflake username uppercased (e.g., `MWINKEL_RAW`). You only need to set `DBT_USER_PREFIX` if you want to override that derived value.
 
 ---
 

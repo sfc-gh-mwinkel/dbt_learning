@@ -184,30 +184,56 @@ Now if tier logic changes, you update it in one place.
 
 One of the most common uses of macros is overriding dbt's built-in behavior. Remember from Lesson 6 that dbt concatenates schemas by default (`public_staging` instead of `staging`)?
 
-The fix is a macro with a special name that dbt calls automatically:
+In a shared training environment, multiple users work in the same Snowflake database. The solution is two macros working together: a helper `get_user_prefix()` that derives a personal prefix from `target.user`, and a `generate_schema_name()` override that uses it.
 
-Create `macros/generate_schema_name.sql`:
+Both macros already exist in your project — they've been active since Lesson 1. Now let's understand how they work.
+
+**`macros/get_user_prefix.sql`** — open and review:
 
 ```sql
--- This macro has a special name that dbt recognizes. When defined in your
--- project, it overrides dbt's built-in version. dbt calls it automatically
--- for every model to determine which schema to use.
--- The {%- -%} (with dashes) strips whitespace so the output is clean.
-{% macro generate_schema_name(custom_schema_name, node) -%}
-    {%- if custom_schema_name is none -%}
-        {{ target.schema }}
+{% macro get_user_prefix() %}
+    {%- set username = target.user | lower -%}
+    {%- if '@' in username -%}
+        {%- set username = username.split('@')[0] -%}
+    {%- endif -%}
+    {%- if '.' in username -%}
+        {%- set name_parts = username.split('.') -%}
+    {%- elif '_' in username -%}
+        {%- set name_parts = username.split('_') -%}
     {%- else -%}
-        -- The | trim filter removes any accidental whitespace from the
-        -- YAML config value. Without it, '+schema: staging ' (trailing space)
-        -- would create a schema named 'staging '.
-        {{ custom_schema_name | trim }}
+        {%- set name_parts = ['', username] -%}
+    {%- endif -%}
+    {%- set first_name = name_parts[0] -%}
+    {%- set last_name = name_parts[-1] -%}
+    {%- set first_initial = first_name[0] if first_name else '' -%}
+    {{ (first_initial ~ last_name) | upper }}
+{%- endmacro %}
+```
+
+This handles all username formats:
+- Email (`jon.snow@company.com`) → `JSNOW`
+- Dot-separated (`jon.snow`) → `JSNOW`
+- Underscore-separated (`jon_snow`) → `JSNOW`
+- No separator (`jsnow`) → `JSNOW`
+
+**`macros/generate_schema_name.sql`** — open and review:
+
+```sql
+{% macro generate_schema_name(custom_schema_name, node) -%}
+    {%- set user_prefix = get_user_prefix() | trim -%}
+    {%- if custom_schema_name is none -%}
+        {{ user_prefix }}_{{ target.schema | upper }}
+    {%- else -%}
+        {{ user_prefix }}_{{ custom_schema_name | trim | upper }}
     {%- endif -%}
 {%- endmacro %}
 ```
 
-**How it works:** dbt calls `generate_schema_name()` for every model. When you define this macro in your project, your version overrides the built-in one. Now `+schema: staging` produces exactly `staging`, not `public_staging`.
+**How it works:** dbt calls `generate_schema_name()` for every model. Your version overrides the built-in one. With `+schema: staging` in `dbt_project.yml`, the result is `JSNOW_STAGING` instead of `public_staging`.
 
 > **Key concept:** dbt has several "dispatch" macros you can override: `generate_schema_name`, `generate_alias_name`, `generate_database_name`. These control where models are materialized.
+>
+> **Why a separate `get_user_prefix()` macro?** User-defined macros are **not** available in YAML Jinja context (e.g., `sources.yml` schema fields). By extracting the logic into `get_user_prefix()`, `generate_schema_name()` stays clean and composable without duplicating parsing logic.
 
 ---
 

@@ -145,6 +145,27 @@ SANDBOX_DBT_TRAINING/
 
 ---
 
+## The `DBT_USER_PREFIX` Environment Variable
+
+The `sources.yml` schema field uses:
+```yaml
+schema: "{{ env_var('DBT_USER_PREFIX', target.user | upper) }}_RAW"
+```
+
+This reads an optional `DBT_USER_PREFIX` environment variable. If it is not set, it falls back to `target.user | upper` (your Snowflake username uppercased). In most cases the fallback is sufficient — set `DBT_USER_PREFIX` only if you need to override the derived prefix.
+
+```bash
+# Optional override (Linux/macOS)
+export DBT_USER_PREFIX=JSNOW
+
+# Optional override (Windows PowerShell)
+$env:DBT_USER_PREFIX = "JSNOW"
+```
+
+Note: model schemas (staging, marts, etc.) are controlled by `generate_schema_name`, which derives the same prefix from `target.user` automatically — no environment variable needed.
+
+---
+
 ## Benefits of This Approach
 
 ✅ **No Conflicts**: Multiple users can work simultaneously
@@ -425,20 +446,16 @@ JSNOW_STAGING      | 5
 
 ---
 
-## Advanced: Understanding the Macro
+## Advanced: Understanding the Macros
 
-For a detailed, step-by-step explanation of how the `generate_schema_name` macro works, see the extensive inline comments in:
+The schema naming logic is split across two files:
 
 ```bash
-cat macros/generate_schema_name.sql
+cat macros/get_user_prefix.sql      # Username parsing logic
+cat macros/generate_schema_name.sql # Schema assembly (calls get_user_prefix)
 ```
 
-The macro is heavily documented with:
-- Purpose and benefits
-- Naming pattern examples
-- Step-by-step logic explanation
-- Troubleshooting tips
-- Verification queries
+`get_user_prefix` handles all username formats (email, dot-separated, underscore-separated, plain). `generate_schema_name` calls it and combines the result with the schema name from `dbt_project.yml`.
 
 ---
 

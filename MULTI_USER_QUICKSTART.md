@@ -45,7 +45,8 @@ dbt debug
 
 **Linux/macOS:**
 ```bash
-# Copy the schema naming macro
+# Copy the schema naming macros
+cp assets/macros/get_user_prefix.sql macros/
 cp assets/macros/generate_schema_name.sql macros/
 
 # Run a test model
@@ -54,7 +55,8 @@ dbt run --select stg_customers
 
 **Windows:**
 ```powershell
-# Copy the schema naming macro
+# Copy the schema naming macros
+Copy-Item assets\macros\get_user_prefix.sql macros\
 Copy-Item assets\macros\generate_schema_name.sql macros\
 
 # Run a test model

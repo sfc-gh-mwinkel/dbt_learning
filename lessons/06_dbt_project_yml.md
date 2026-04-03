@@ -118,15 +118,17 @@ staging:
 
 **Important:** By default, dbt _concatenates_ the target schema with the custom schema. If your target schema is `public` and you set `+schema: staging`, the actual schema becomes `public_staging`.
 
-To get exact schema names, you need a custom `generate_schema_name` macro. Copy the provided macro now:
+To get exact schema names, you need two macros that work together. Copy both now:
 
 **Linux/macOS:**
 ```bash
+cp assets/macros/get_user_prefix.sql macros/
 cp assets/macros/generate_schema_name.sql macros/
 ```
 
 **Windows:**
 ```powershell
+Copy-Item assets\macros\get_user_prefix.sql macros\
 Copy-Item assets\macros\generate_schema_name.sql macros\
 ```
 
@@ -189,7 +191,7 @@ WHERE table_schema LIKE 'JDOE_%'
   AND table_name = 'STG_CUSTOMERS';
 ```
 
-> **Note**: The macro is extensively documented with inline comments. Open `macros/generate_schema_name.sql` to see the detailed step-by-step explanation of how username parsing works.
+> **Note**: Open `macros/get_user_prefix.sql` to see how username parsing works (handles email, dot-separated, and underscore-separated formats). Open `macros/generate_schema_name.sql` to see how it calls `get_user_prefix()` to assemble the final schema name.
 
 ---
 

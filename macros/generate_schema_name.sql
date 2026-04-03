@@ -11,9 +11,9 @@
     <first_initial><last_name>_<schema_name>
     
     Examples:
-      - Jon Snow's staging schema      → JSNOW_STAGING
-      - Sara Glacier's marts schema    → SGLACIER_MARTS
-      - Bob Johnson's intermediate     → BJOHNSON_INTERMEDIATE
+      - Jon Snows staging schema      → JSNOW_STAGING
+      - Sara Glaciers marts schema    → SGLACIER_MARTS
+      - Bob Johnsons intermediate     → BJOHNSON_INTERMEDIATE
       - No-separator username (TSNOW)  → TSNOW_STAGING
   
   How It Works:
@@ -55,114 +55,19 @@
 #}
 
 {% macro generate_schema_name(custom_schema_name, node) -%}
-    
-    {#- 
-      STEP 1: Extract username from Snowflake connection
-      --------------------------------------------------
-      target.user comes from profiles.yml and could be:
-        - Email: jon.snow@company.com
-        - Snowflake user: JON.SNOW
-        - Simple format: jon.snow
-        - No separator: JSNOW (used as-is)
-    -#}
-    {%- set username = target.user | lower -%}
-    
-    {#-
-      STEP 2: Remove email domain if present
-      ---------------------------------------
-      If username is an email (jon.snow@company.com), extract just the
-      name part (jon.snow) by splitting on '@' and taking the first part.
-      
-      split('@')[0] means:
-        - Split the string by '@' delimiter
-        - Take the first element (index 0)
-        - "jon.snow@company.com" → ["jon.snow", "company.com"] → "jon.snow"
-    -#}
-    {%- if '@' in username -%}
-        {%- set username = username.split('@')[0] -%}
-    {%- endif -%}
-    
-    {#-
-      STEP 3: Parse first name and last name
-      ---------------------------------------
-      Usernames typically use '.' or '_' as separators:
-        - jon.snow → ["jon", "snow"]
-        - sara_glacier → ["sara", "glacier"]
-      
-      We split on both '.' and '_' to handle both formats.
-      If no separator is found, the entire username becomes the prefix
-      (e.g., "jsnow" → prefix "JSNOW").
-    -#}
-    {%- if '.' in username -%}
-        {%- set name_parts = username.split('.') -%}
-    {%- elif '_' in username -%}
-        {%- set name_parts = username.split('_') -%}
-    {%- else -%}
-        {#- If no separator (e.g., JSNOW), use entire username as prefix -#}
-        {%- set name_parts = ['', username] -%}
-    {%- endif -%}
-    
-    {#-
-      STEP 4: Extract first initial and last name
-      --------------------------------------------
-      - first_name[0] gets the first character of first name
-      - last_name is the full last name
-      
-      Examples:
-        - ["jon", "snow"] → first_initial = "j", last_name = "snow"
-        - ["sara", "glacier"] → first_initial = "s", last_name = "glacier"
-        - ["", "jsnow"] → first_initial = "", last_name = "jsnow" (no separator)
-    -#}
-    {%- set first_name = name_parts[0] -%}
-    {%- set last_name = name_parts[-1] -%}  {#- [-1] gets the last element -#}
-    {%- set first_initial = first_name[0] if first_name else '' -%}
-    
-    {#-
-      STEP 5: Create user prefix
-      ---------------------------
-      Combine first initial + last name to create the user-specific prefix.
-      
-      Examples:
-        - j + snow → jsnow
-        - s + glacier → sglacier
-        - "" + jsnow → jsnow (no separator, used as-is)
-      
-      upper() converts to uppercase for Snowflake convention.
-    -#}
-    {%- set user_prefix = (first_initial ~ last_name) | upper -%}
-    
-    {#-
-      STEP 6: Combine prefix with schema name
-      ----------------------------------------
-      Two scenarios:
-      
-      A) No custom schema specified (custom_schema_name is none):
-         - Use target.schema from profiles.yml
-         - Example: If target.schema = 'public'
-           Result: JSNOW_PUBLIC
-      
-      B) Custom schema specified in dbt_project.yml:
-         - Use the custom schema name (e.g., 'staging', 'marts')
-         - Combine: user_prefix + '_' + custom_schema_name
-         - Example: JSNOW + '_' + STAGING → JSNOW_STAGING
-      
-      The trim() filter removes any accidental whitespace from YAML configs.
-    -#}
+    {%- set user_prefix = get_user_prefix() | trim -%}
     {%- if custom_schema_name is none -%}
-        {#- No custom schema - use default from profiles.yml with user prefix -#}
         {{ user_prefix }}_{{ target.schema | upper }}
     {%- else -%}
-        {#- Custom schema from dbt_project.yml - combine with user prefix -#}
         {{ user_prefix }}_{{ custom_schema_name | trim | upper }}
     {%- endif -%}
-
 {%- endmacro %}
 
 {#
   TESTING THE MACRO
   =================
   
-  To test this macro with different usernames, you can use dbt's compile command:
+  To test this macro with different usernames, you can use dbts compile command:
   
     dbt compile --select stg_customers
   

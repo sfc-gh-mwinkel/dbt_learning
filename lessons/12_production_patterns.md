@@ -261,7 +261,7 @@ sources:
   - name: raw
     description: "Raw data loaded by external processes"
     database: DBT_LEARNING
-    schema: "{{ (target.user.split('.')[0][0] ~ target.user.split('.')[-1]) | upper if '.' in target.user else target.user | upper }}_RAW"
+    schema: "{{ env_var('DBT_USER_PREFIX', target.user | upper) }}_RAW"
     
     freshness:
       warn_after: {count: 24, period: hour}
@@ -282,6 +282,8 @@ sources:
       - name: products
         freshness: null  # Disable freshness check for static reference data
 ```
+
+> **Note:** `env_var('DBT_USER_PREFIX', target.user | upper)` reads an optional environment variable. If `DBT_USER_PREFIX` is not set, it falls back to your Snowflake username uppercased (e.g., `MWINKEL_RAW`). See Lesson 1 for the full explanation.
 
 ### The loaded_at_field
 

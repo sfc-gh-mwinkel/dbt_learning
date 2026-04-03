@@ -148,7 +148,7 @@ version: 2
 sources:
   - name: raw
     description: "Raw seed data loaded via dbt seed"
-    schema: "{{ generate_schema_name('raw') }}"
+    schema: "{{ env_var('DBT_USER_PREFIX', target.user | upper) }}_RAW"
     tables:
       - name: customers
         description: "Raw customer records"
@@ -164,7 +164,7 @@ sources:
 
 > **Tip**: You can also copy the complete template with `cp assets/yml_templates/sources.yml models/staging/`
 >
-> **Note:** The `generate_schema_name` macro creates user-specific schemas (e.g., `JDOE_RAW`). This macro is explained in detail in Lesson 8 — for now, just use the code as shown.
+> **Note:** The `env_var('DBT_USER_PREFIX', target.user | upper)` pattern reads an optional environment variable `DBT_USER_PREFIX`. If it's not set, it falls back to your Snowflake username (`target.user`) uppercased. This creates user-specific schemas like `MWINKEL_RAW` so multiple learners can share the same database without conflicts. The `generate_schema_name` macro (covered in Lesson 8) handles the same pattern for your model schemas.
 
 Then create each staging model. If you completed the Lesson 1 exercises, you already have `stg_customers` and `stg_products`. If not, copy them from assets first:
 

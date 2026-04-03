@@ -339,7 +339,7 @@ dbt show --select customers --limit 3
 
 ### How Schema Names Work
 
-This project uses a custom `generate_schema_name` macro that creates user-specific schemas:
+This project uses two macros that work together to create user-specific schemas: `get_user_prefix` (parses `target.user` into a personal prefix) and `generate_schema_name` (uses that prefix to assemble the final schema name):
 
 | Username | Schema Prefix | Example Schemas |
 |----------|--------------|-----------------|
