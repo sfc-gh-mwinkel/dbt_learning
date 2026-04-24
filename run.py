@@ -207,17 +207,17 @@ def _catch_up(lesson: int):
         _copy("assets/seeds/orders.csv", "seeds/orders.csv")
     elif lesson == 2:
         _catch_up(1)
-        _copy("assets/models/staging/stg_customers.sql", "models/staging/stg_customers.sql")
-        _copy("assets/models/staging/stg_orders.sql", "models/staging/stg_orders.sql")
+        _copy("assets/models/staging/stg_raw__customers.sql", "models/staging/stg_raw__customers.sql")
+        _copy("assets/models/staging/stg_raw__orders.sql", "models/staging/stg_raw__orders.sql")
         _copy("assets/yml_templates/sources.yml", "models/staging/sources.yml")
     elif lesson == 3:
         _catch_up(2)
         for s in ["products.csv", "order_items.csv", "payments.csv"]:
             _copy(f"assets/seeds/{s}", f"seeds/{s}")
-        for m in ["stg_products.sql", "stg_order_items.sql", "stg_payments.sql"]:
+        for m in ["stg_raw__products.sql", "stg_raw__order_items.sql", "stg_raw__payments.sql"]:
             _copy(f"assets/models/staging/{m}", f"models/staging/{m}")
-        for y in ["stg_customers.yml", "stg_orders.yml", "stg_products.yml",
-                   "stg_order_items.yml", "stg_payments.yml"]:
+        for y in ["stg_raw__customers.yml", "stg_raw__orders.yml", "stg_raw__products.yml",
+                   "stg_raw__order_items.yml", "stg_raw__payments.yml"]:
             _copy(f"assets/yml_templates/staging/{y}", f"models/staging/{y}")
     elif lesson == 4:
         _catch_up(3)
@@ -262,9 +262,9 @@ def _catch_up(lesson: int):
 NEXT_STEPS = {
     1:  ["dbt seed",
          "Create models/staging/sources.yml (follow lesson instructions)",
-         "Create models/staging/stg_customers.sql (follow lesson instructions)"],
+         "Create models/staging/stg_raw__customers.sql (follow lesson instructions)"],
     2:  ["dbt seed", "dbt run --select staging",
-         "Create stg_customers.yml and stg_orders.yml (follow lesson instructions)"],
+         "Create stg_raw__customers.yml and stg_raw__orders.yml (follow lesson instructions)"],
     3:  ["dbt seed", "dbt run --select staging", "dbt test --select staging"],
     4:  ["dbt seed", "dbt run",
          "Review the complete data flow: staging > intermediate > marts"],
@@ -309,23 +309,23 @@ PREREQS = {
     1: {
         "files": ["dbt_project.yml"],
         "seeds": ["customers.csv", "orders.csv"],
-        "models": ["staging/stg_customers.sql"],
+        "models": ["staging/stg_raw__customers.sql"],
     },
     2: {
         "files": ["models/staging/sources.yml", "models/staging/schema.yml"],
-        "models": ["staging/stg_customers.sql", "staging/stg_orders.sql"],
+        "models": ["staging/stg_raw__customers.sql", "staging/stg_raw__orders.sql"],
     },
     3: {
         "seeds": ["customers.csv", "orders.csv", "products.csv",
                   "order_items.csv", "payments.csv"],
-        "models": ["staging/stg_customers.sql", "staging/stg_orders.sql",
-                   "staging/stg_products.sql", "staging/stg_order_items.sql",
-                   "staging/stg_payments.sql"],
+        "models": ["staging/stg_raw__customers.sql", "staging/stg_raw__orders.sql",
+                   "staging/stg_raw__products.sql", "staging/stg_raw__order_items.sql",
+                   "staging/stg_raw__payments.sql"],
     },
     4: {
-        "models": ["staging/stg_customers.sql", "staging/stg_orders.sql",
-                   "staging/stg_products.sql", "staging/stg_order_items.sql",
-                   "staging/stg_payments.sql",
+        "models": ["staging/stg_raw__customers.sql", "staging/stg_raw__orders.sql",
+                   "staging/stg_raw__products.sql", "staging/stg_raw__order_items.sql",
+                   "staging/stg_raw__payments.sql",
                    "intermediate/int_orders_with_payments.sql",
                    "intermediate/int_order_items_with_products.sql",
                    "intermediate/int_customers__order_summary.sql",
