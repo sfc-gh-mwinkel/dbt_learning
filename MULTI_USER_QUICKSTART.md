@@ -50,7 +50,7 @@ cp assets/macros/get_user_prefix.sql macros/
 cp assets/macros/generate_schema_name.sql macros/
 
 # Run a test model
-dbt run --select stg_customers
+dbt run --select stg_raw__customers
 ```
 
 **Windows:**
@@ -60,7 +60,7 @@ Copy-Item assets\macros\get_user_prefix.sql macros\
 Copy-Item assets\macros\generate_schema_name.sql macros\
 
 # Run a test model
-dbt run --select stg_customers
+dbt run --select stg_raw__customers
 ```
 
 **In Snowflake**:

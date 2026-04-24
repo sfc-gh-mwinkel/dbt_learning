@@ -14,7 +14,7 @@ By the end of this lesson you will be able to:
 ## Prerequisites
 
 - **Completed:** Lessons 1-3
-- **Models exist:** All five staging models (`stg_customers`, `stg_orders`, `stg_products`, `stg_order_items`, `stg_payments`)
+- **Models exist:** All five staging models (`stg_raw__customers`, `stg_raw__orders`, `stg_raw__products`, `stg_raw__order_items`, `stg_raw__payments`)
 - **Seeds loaded:** All CSV files in `seeds/`
 - **Verified:** `dbt run --select staging` completes successfully
 
@@ -59,11 +59,11 @@ Create `models/intermediate/int_orders_with_payments.sql`:
 -- Import CTEs: each dependency gets its own CTE for clarity.
 -- This pattern makes it obvious which models feed this one.
 with orders as (
-    select * from {{ ref('stg_orders') }}
+    select * from {{ ref('stg_raw__orders') }}
 ),
 
 payments as (
-    select * from {{ ref('stg_payments') }}
+    select * from {{ ref('stg_raw__payments') }}
 )
 
 select
@@ -103,11 +103,11 @@ Create `models/intermediate/int_order_items_with_products.sql`:
 
 ```sql
 with order_items as (
-    select * from {{ ref('stg_order_items') }}
+    select * from {{ ref('stg_raw__order_items') }}
 ),
 
 products as (
-    select * from {{ ref('stg_products') }}
+    select * from {{ ref('stg_raw__products') }}
 )
 
 select
@@ -139,11 +139,11 @@ with
 
 -- Step 1: Import CTEs pull in dependencies. Name them after the model they reference.
 customers as (
-    select * from {{ ref('stg_customers') }}
+    select * from {{ ref('stg_raw__customers') }}
 ),
 
 orders as (
-    select * from {{ ref('stg_orders') }}
+    select * from {{ ref('stg_raw__orders') }}
 ),
 
 -- Step 2: Transform CTEs contain the actual logic. Keep each CTE focused
@@ -189,11 +189,11 @@ Create `models/intermediate/int_customers__order_summary.sql`:
 
 ```sql
 with customers as (
-    select * from {{ ref('stg_customers') }}
+    select * from {{ ref('stg_raw__customers') }}
 ),
 
 orders as (
-    select * from {{ ref('stg_orders') }}
+    select * from {{ ref('stg_raw__orders') }}
 ),
 
 -- Aggregation CTE: compute order-level metrics per customer.
@@ -389,7 +389,7 @@ select
     order_date,
     status,
     amount
-from {{ ref('stg_orders') }}
+from {{ ref('stg_raw__orders') }}
 
 -- is_incremental() returns true only when:
 --   1. The model is configured as incremental, AND

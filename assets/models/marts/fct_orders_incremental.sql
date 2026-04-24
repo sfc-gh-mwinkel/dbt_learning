@@ -16,8 +16,8 @@ with source_data as (
         p.amount as total_amount,
         current_timestamp() as loaded_at
     
-    from {{ ref('stg_orders') }} o
-    left join {{ ref('stg_payments') }} p
+    from {{ ref('stg_raw__orders') }} o
+    left join {{ ref('stg_raw__payments') }} p
         on o.order_id = p.order_id
 )
 

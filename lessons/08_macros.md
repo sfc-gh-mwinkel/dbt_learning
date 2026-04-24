@@ -30,7 +30,7 @@ dbt uses **Jinja2** as its templating language. Everything between `{{ }}`, `{% 
 
 | Syntax | Purpose | Example |
 |--------|---------|---------|
-| `{{ }}` | Output an expression | `{{ ref('stg_orders') }}` |
+| `{{ }}` | Output an expression | `{{ ref('stg_raw__orders') }}` |
 | `{% %}` | Execute a statement | `{% if is_incremental() %}` |
 | `{# #}` | Comment (not in compiled SQL) | `{# This is a comment #}` |
 
@@ -48,7 +48,7 @@ You've already been using Jinja: `{{ ref() }}`, `{{ source() }}`, `{{ config() }
 -- Use it to avoid repeating a column name or value across the query.
 {% set my_column = 'customer_id' %}
 
-select {{ my_column }} from {{ ref('stg_customers') }}
+select {{ my_column }} from {{ ref('stg_raw__customers') }}
 
 -- Compiles to: select customer_id from ...
 ```
@@ -70,7 +70,7 @@ select
     -- which would cause a SQL syntax error.
     {% if not loop.last %},{% endif %}
     {% endfor %}
-from {{ ref('stg_orders') }}
+from {{ ref('stg_raw__orders') }}
 group by order_id
 ```
 
@@ -95,9 +95,9 @@ group by order_id
 -- Conditional Jinja lets you write environment-aware SQL: limit rows in dev to
 -- speed up development, but process everything in production.
 {% if target.name == 'dev' %}
-    select * from {{ ref('stg_orders') }} limit 100
+    select * from {{ ref('stg_raw__orders') }} limit 100
 {% else %}
-    select * from {{ ref('stg_orders') }}
+    select * from {{ ref('stg_raw__orders') }}
 {% endif %}
 ```
 
@@ -253,7 +253,7 @@ Call with or without the optional argument:
 select
     {{ cents_to_dollars('amount_cents') }} as amount,           -- Uses default precision=2
     {{ cents_to_dollars('amount_cents', 4) }} as precise_amount  -- Override to 4
-from {{ ref('stg_payments') }}
+from {{ ref('stg_raw__payments') }}
 ```
 
 ---
@@ -315,9 +315,9 @@ dbt provides several built-in macros and context variables:
 
 1. Copy the macro assets: `cp assets/macros/*.sql macros/`
 2. Run `dbt compile --select dim_customers` and inspect the compiled SQL
-3. Modify `stg_customers` to use `{{ clean_string('email') }}` for the email column
+3. Modify `stg_raw__customers` to use `{{ clean_string('email') }}` for the email column
 4. Modify `dim_customers` to use `{{ classify_tier('lifetime_value', 300, 100) }}` for the tier column
-5. Verify that `generate_schema_name` is working: run `dbt run --select stg_customers` and check which schema the view was created in
+5. Verify that `generate_schema_name` is working: run `dbt run --select stg_raw__customers` and check which schema the view was created in
 6. Write a new macro `macros/safe_divide.sql` that divides two columns and returns 0 when the denominator is 0:
    ```sql
    {% macro safe_divide(numerator, denominator) %}

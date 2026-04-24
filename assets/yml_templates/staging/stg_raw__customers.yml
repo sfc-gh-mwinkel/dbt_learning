@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: stg_customers
+  - name: stg_raw__customers
     description: "Cleaned and typed customer data from raw source"
     columns:
       - name: customer_id

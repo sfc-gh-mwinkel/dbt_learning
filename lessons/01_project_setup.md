@@ -137,7 +137,7 @@ sources:
 
 ## 1.4 Write Your First Staging Model
 
-Create `models/staging/stg_customers.sql`:
+Create `models/staging/stg_raw__customers.sql`:
 
 ```sql
 -- CTE pattern: always start with an "import" CTE to isolate your raw data access.
@@ -172,7 +172,7 @@ This model:
 Run it:
 
 ```bash
-dbt run --select stg_customers
+dbt run --select stg_raw__customers
 ```
 
 ---
@@ -182,7 +182,7 @@ dbt run --select stg_customers
 Check that the model was created in Snowflake. You can run:
 
 ```bash
-dbt show --select stg_customers
+dbt show --select stg_raw__customers
 ```
 
 This previews the first rows of your model without leaving the terminal.
@@ -193,8 +193,8 @@ This previews the first rows of your model without leaving the terminal.
 
 1. Copy `assets/seeds/products.csv` into `seeds/` and run `dbt seed` again
 2. Add a `products` table entry to your `sources.yml`
-3. Create `models/staging/stg_products.sql` that selects from `{{ source('raw', 'products') }}` and casts `price` to `decimal(10, 2)`
-4. Run `dbt run --select stg_products` and verify with `dbt show --select stg_products`
+3. Create `models/staging/stg_raw__products.sql` that selects from `{{ source('raw', 'products') }}` and casts `price` to `decimal(10, 2)`
+4. Run `dbt run --select stg_raw__products` and verify with `dbt show --select stg_raw__products`
 
 ---
 

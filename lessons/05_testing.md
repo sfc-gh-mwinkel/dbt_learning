@@ -64,7 +64,7 @@ models:
           - not_null          # No NULLs
           - unique            # No duplicates
           - relationships:    # Referential integrity
-              to: ref('stg_customers')
+              to: ref('stg_raw__customers')
               field: customer_id
 
       - name: customer_tier

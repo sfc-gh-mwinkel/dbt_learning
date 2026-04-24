@@ -352,7 +352,7 @@ This allows multiple users to work in the same database without conflicts.
 ### Verify Your Schema Prefix
 
 ```bash
-dbt compile --select stg_customers
+dbt compile --select stg_raw__customers
 ```
 
 Check the compiled SQL in `target/compiled/` - the FROM clause will show your schema name (e.g., `DBT_LEARNING.JSNOW_RAW.customers`).

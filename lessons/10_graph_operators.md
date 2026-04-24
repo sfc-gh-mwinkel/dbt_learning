@@ -83,7 +83,7 @@ dbt run --select @int_orders_with_payments
 
 This selects:
 - `int_orders_with_payments` itself
-- Its parents (`stg_orders`, `stg_payments`)
+- Its parents (`stg_raw__orders`, `stg_raw__payments`)
 - Its children (`fct_orders`)
 - AND any other children of its parents
 
@@ -138,7 +138,7 @@ dbt test                   # Test all models
 dbt build                  # Build model A → test A → build model B → test B → ...
 ```
 
-**Why this matters:** If `stg_orders` has a data quality issue, `dbt build` catches it _before_ building downstream models like `fct_orders`. With `dbt run && dbt test`, you'd build everything first, then discover the issue.
+**Why this matters:** If `stg_raw__orders` has a data quality issue, `dbt build` catches it _before_ building downstream models like `fct_orders`. With `dbt run && dbt test`, you'd build everything first, then discover the issue.
 
 ```bash
 dbt build                              # Build and test everything

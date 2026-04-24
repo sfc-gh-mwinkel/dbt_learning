@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: stg_products
+  - name: stg_raw__products
     description: "Cleaned product catalog data"
     columns:
       - name: product_id

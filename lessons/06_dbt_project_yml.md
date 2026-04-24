@@ -173,7 +173,7 @@ dbt_learning:
 **Verify your schema names**:
 ```bash
 # After running dbt, check what schemas were created
-dbt run --select stg_customers
+dbt run --select stg_raw__customers
 ```
 
 Then in Snowflake:
@@ -251,7 +251,7 @@ select
         when lifetime_value >= {{ var('mid_value_threshold') }} then 'silver'
         else 'bronze'
     end as customer_tier
-from {{ ref('stg_customers') }}
+from {{ ref('stg_raw__customers') }}
 ```
 
 Override at runtime:

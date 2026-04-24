@@ -63,7 +63,7 @@ vi ~/.dbt/profiles.yml
 
 ## Model Errors
 
-### Error: "Compilation Error: Model 'stg_customers' depends on a node named 'source.raw.customers' which was not found"
+### Error: "Compilation Error: Model 'stg_raw__customers' depends on a node named 'source.raw.customers' which was not found"
 
 **Cause**: Missing or incorrectly named source in `sources.yml`
 
@@ -323,7 +323,7 @@ ls dbt_packages/
 ```sql
 {{ config(materialized='incremental', unique_key='order_id') }}
 
-select * from {{ ref('stg_orders') }}
+select * from {{ ref('stg_raw__orders') }}
 
 {% if is_incremental() %}
     where order_date > (select max(order_date) from {{ this }})

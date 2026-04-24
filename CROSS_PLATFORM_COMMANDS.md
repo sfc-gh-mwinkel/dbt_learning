@@ -132,13 +132,13 @@ dbt clean
 - Forward slashes: `/`
 - Home directory: `~` or `$HOME`
 - dbt profiles: `~/.dbt/profiles.yml`
-- Example: `models/staging/stg_customers.sql`
+- Example: `models/staging/stg_raw__customers.sql`
 
 ### Windows
 - Backslashes: `\` (or forward slashes work too)
 - Home directory: `$HOME` or `$env:USERPROFILE`
 - dbt profiles: `$HOME\.dbt\profiles.yml`
-- Example: `models\staging\stg_customers.sql`
+- Example: `models\staging\stg_raw__customers.sql`
 
 ---
 

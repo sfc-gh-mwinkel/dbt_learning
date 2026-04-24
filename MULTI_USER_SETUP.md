@@ -45,7 +45,7 @@ dbt_learning:
 Run a test build:
 
 ```bash
-dbt run --select stg_customers
+dbt run --select stg_raw__customers
 ```
 
 Check what schemas were created:

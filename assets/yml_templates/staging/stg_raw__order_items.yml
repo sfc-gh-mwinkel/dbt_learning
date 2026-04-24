@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: stg_order_items
+  - name: stg_raw__order_items
     description: "Cleaned line item data"
     columns:
       - name: line_item_id

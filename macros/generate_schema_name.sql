@@ -69,10 +69,10 @@
   
   To test this macro with different usernames, you can use dbts compile command:
   
-    dbt compile --select stg_customers
+    dbt compile --select stg_raw__customers
   
   Then check the compiled SQL in:
-    target/compiled/dbt_learning/models/staging/stg_customers.sql
+    target/compiled/dbt_learning/models/staging/stg_raw__customers.sql
   
   The FROM clause will show the actual schema name generated.
   

@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: stg_payments
+  - name: stg_raw__payments
     description: "Cleaned payment transaction data"
     columns:
       - name: payment_id

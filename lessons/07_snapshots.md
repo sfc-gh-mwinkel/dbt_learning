@@ -14,7 +14,7 @@ By the end of this lesson you will be able to:
 ## Prerequisites
 
 - **Completed:** Lessons 1-6
-- **Models exist:** All staging models, particularly `stg_orders`
+- **Models exist:** All staging models, particularly `stg_raw__orders`
 - **Seeds loaded:** `orders.csv` in `seeds/`
 
 **Catch up:** If you're missing prerequisites, run:

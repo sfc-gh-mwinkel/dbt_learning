@@ -14,7 +14,7 @@ By the end of this lesson you will be able to:
 ## Prerequisites
 
 - **Completed:** Lessons 1-2
-- **Models exist:** `stg_customers.sql` with basic tests
+- **Models exist:** `stg_raw__customers.sql` with basic tests
 - **Seeds loaded:** `customers.csv`, `orders.csv` in `seeds/`
 
 **Catch up:** If you're missing prerequisites, run:
@@ -50,7 +50,7 @@ In Lesson 1 you used `{{ source() }}` to reference raw tables. From this point f
 -- ref() creates a dependency link between models. dbt uses these to build its DAG
 -- (directed acyclic graph), which determines execution order automatically.
 -- You never hard-code schema or table names — ref() resolves them for you.
-select * from {{ ref('stg_customers') }}
+select * from {{ ref('stg_raw__customers') }}
 ```
 
 > **Key concept:** `ref()` is what makes dbt powerful. It automatically builds a dependency graph (DAG) so dbt knows which models to run first. You never hard-code table names.
@@ -68,13 +68,13 @@ stg_{source_name}__{table_name}.sql
 Examples:
 | Source Table | Staging Model |
 |-------------|--------------|
-| `raw.customers` | `stg_customers.sql` |
-| `raw.orders` | `stg_orders.sql` |
-| `raw.products` | `stg_products.sql` |
-| `raw.order_items` | `stg_order_items.sql` |
-| `raw.payments` | `stg_payments.sql` |
+| `raw.customers` | `stg_raw__customers.sql` |
+| `raw.orders` | `stg_raw__orders.sql` |
+| `raw.products` | `stg_raw__products.sql` |
+| `raw.order_items` | `stg_raw__order_items.sql` |
+| `raw.payments` | `stg_raw__payments.sql` |
 
-> **Note:** The double underscore (`__`) separates the source name from the table name. For this project we keep it simple, but in larger projects you'd use `stg_raw__customers` to distinguish from other sources.
+> **Note:** The double underscore (`__`) separates the source name from the table name. This makes it immediately clear which source system each model comes from, which becomes essential when a project pulls from multiple sources (e.g., `stg_salesforce__accounts`, `stg_stripe__payments`).
 
 ---
 
@@ -166,25 +166,25 @@ sources:
 >
 > **Note:** The `env_var('DBT_USER_PREFIX', target.user | upper)` pattern reads an optional environment variable `DBT_USER_PREFIX`. If it's not set, it falls back to your Snowflake username (`target.user`) uppercased. This creates user-specific schemas like `MWINKEL_RAW` so multiple learners can share the same database without conflicts. The `generate_schema_name` macro (covered in Lesson 8) handles the same pattern for your model schemas.
 
-Then create each staging model. If you completed the Lesson 1 exercises, you already have `stg_customers` and `stg_products`. If not, copy them from assets first:
+Then create each staging model. If you completed the Lesson 1 exercises, you already have `stg_raw__customers` and `stg_raw__products`. If not, copy them from assets first:
 
 **Linux/macOS:**
 ```bash
 # Only if you skipped the Lesson 1 exercises
-cp assets/models/staging/stg_customers.sql models/staging/
-cp assets/models/staging/stg_products.sql models/staging/
+cp assets/models/staging/stg_raw__customers.sql models/staging/
+cp assets/models/staging/stg_raw__products.sql models/staging/
 ```
 
 **Windows:**
 ```powershell
 # Only if you skipped the Lesson 1 exercises
-Copy-Item assets\models\staging\stg_customers.sql models\staging\
-Copy-Item assets\models\staging\stg_products.sql models\staging\
+Copy-Item assets\models\staging\stg_raw__customers.sql models\staging\
+Copy-Item assets\models\staging\stg_raw__products.sql models\staging\
 ```
 
 Now add the remaining staging models:
 
-**`models/staging/stg_orders.sql`**
+**`models/staging/stg_raw__orders.sql`**
 ```sql
 with source as (
     select * from {{ source('raw', 'orders') }}
@@ -199,7 +199,7 @@ select
 from source
 ```
 
-**`models/staging/stg_order_items.sql`**
+**`models/staging/stg_raw__order_items.sql`**
 ```sql
 with source as (
     select * from {{ source('raw', 'order_items') }}
@@ -220,7 +220,7 @@ select
 from source
 ```
 
-**`models/staging/stg_payments.sql`**
+**`models/staging/stg_raw__payments.sql`**
 ```sql
 with source as (
     select * from {{ source('raw', 'payments') }}
@@ -235,7 +235,7 @@ select
 from source
 ```
 
-> **Note:** `stg_order_items` introduces a _computed column_ (`line_total`). This is acceptable in staging because it's a direct calculation on the same row, not business logic involving other tables.
+> **Note:** `stg_raw__order_items` introduces a _computed column_ (`line_total`). This is acceptable in staging because it's a direct calculation on the same row, not business logic involving other tables.
 
 ---
 
@@ -284,9 +284,9 @@ dbt run --select staging
 Verify they were created:
 
 ```bash
-dbt show --select stg_orders --limit 5
-dbt show --select stg_order_items --limit 5
-dbt show --select stg_payments --limit 5
+dbt show --select stg_raw__orders --limit 5
+dbt show --select stg_raw__order_items --limit 5
+dbt show --select stg_raw__payments --limit 5
 ```
 
 Run tests:
@@ -311,9 +311,9 @@ Right now all staging models depend only on sources. In the next lesson, you'll 
 
 ## 3.9 Exercises
 
-1. Add a `line_total` computed column to `stg_order_items` if you haven't already
-2. Try changing `stg_customers` to `ephemeral` materialization and run `dbt run`. What happens when you try `dbt show --select stg_customers`?
-3. Create `.yml` files for all five staging models (e.g., `stg_products.yml`, `stg_order_items.yml`, `stg_payments.yml`) with `not_null` and `unique` tests on primary keys
+1. Add a `line_total` computed column to `stg_raw__order_items` if you haven't already
+2. Try changing `stg_raw__customers` to `ephemeral` materialization and run `dbt run`. What happens when you try `dbt show --select stg_raw__customers`?
+3. Create `.yml` files for all five staging models (e.g., `stg_raw__products.yml`, `stg_raw__order_items.yml`, `stg_raw__payments.yml`) with `not_null` and `unique` tests on primary keys
 4. Run `dbt test` and ensure all tests pass
 
 ---

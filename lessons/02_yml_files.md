@@ -13,7 +13,7 @@ By the end of this lesson you will be able to:
 ## Prerequisites
 
 - **Completed:** Lesson 1 (Project Setup)
-- **Models exist:** `stg_customers.sql` in `models/staging/`
+- **Models exist:** `stg_raw__customers.sql` in `models/staging/`
 - **Seeds loaded:** `dbt seed` completed successfully
 - **Connection verified:** `dbt debug` passes
 
@@ -98,13 +98,13 @@ dbt test --select source:raw
 
 Each model gets its own `.yml` file with the same name. This keeps documentation close to the code and makes it easy to find.
 
-Create `models/staging/stg_customers.yml`:
+Create `models/staging/stg_raw__customers.yml`:
 
 ```yaml
 version: 2
 
 models:
-  - name: stg_customers
+  - name: stg_raw__customers
     description: "Cleaned and typed customer data from raw source"
     columns:
       - name: customer_id
@@ -120,13 +120,13 @@ models:
           - not_null
 ```
 
-Create `models/staging/stg_orders.yml`:
+Create `models/staging/stg_raw__orders.yml`:
 
 ```yaml
 version: 2
 
 models:
-  - name: stg_orders
+  - name: stg_raw__orders
     description: "Cleaned and typed order data from raw source"
     columns:
       - name: order_id
@@ -139,10 +139,10 @@ models:
         tests:
           - not_null
           # relationships test enforces referential integrity — every customer_id
-          # in stg_orders must exist in stg_customers. This catches orphaned records
+          # in stg_raw__orders must exist in stg_raw__customers. This catches orphaned records
           # caused by late-arriving data or source system bugs.
           - relationships:
-              to: ref('stg_customers')
+              to: ref('stg_raw__customers')
               field: customer_id
       - name: status
         description: "Current order status"
@@ -173,8 +173,8 @@ dbt test
 Or target specific models:
 
 ```bash
-dbt test --select stg_customers
-dbt test --select stg_orders
+dbt test --select stg_raw__customers
+dbt test --select stg_raw__orders
 ```
 
 ---
@@ -190,7 +190,7 @@ Completed with 0 errors and 0 warnings
 If a test fails, dbt tells you which test and how many rows failed. For example:
 
 ```
-Failure in test unique_stg_customers_customer_id
+Failure in test unique_stg_raw__customers_customer_id
   Got 3 results, configured to fail if != 0
 ```
 
@@ -205,12 +205,12 @@ The recommended convention is **1:1 model-to-yml files**:
 ```
 models/staging/
   sources.yml           # Source definitions
-  stg_customers.sql     # Model SQL
-  stg_customers.yml     # Model documentation & tests
-  stg_orders.sql
-  stg_orders.yml
-  stg_products.sql
-  stg_products.yml
+  stg_raw__customers.sql     # Model SQL
+  stg_raw__customers.yml     # Model documentation & tests
+  stg_raw__orders.sql
+  stg_raw__orders.yml
+  stg_raw__products.sql
+  stg_raw__products.yml
 ```
 
 This approach:
@@ -224,9 +224,9 @@ This approach:
 ## 2.7 Exercises
 
 1. Add the `products` and `order_items` tables to your `sources.yml` with at least one test each
-2. Create `stg_products.yml` and `stg_order_items.yml` files with appropriate tests
+2. Create `stg_raw__products.yml` and `stg_raw__order_items.yml` files with appropriate tests
 3. Run `dbt test` and fix any failures
-4. Verify the `relationships` test on `stg_orders.customer_id` works by running `dbt test --select stg_orders`
+4. Verify the `relationships` test on `stg_raw__orders.customer_id` works by running `dbt test --select stg_raw__orders`
 
 ---
 

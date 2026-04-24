@@ -26,7 +26,7 @@ Quick reference for common dbt and data engineering terms used throughout these 
 
 | Syntax | Purpose | Example |
 |--------|---------|---------|
-| `{{ }}` | Output an expression | `{{ ref('stg_orders') }}` |
+| `{{ }}` | Output an expression | `{{ ref('stg_raw__orders') }}` |
 | `{% %}` | Execute a statement (control flow) | `{% if is_incremental() %}` |
 | `{# #}` | Comment (not in compiled SQL) | `{# This is a comment #}` |
 
@@ -94,7 +94,7 @@ Quick reference for common dbt and data engineering terms used throughout these 
 | Operator | Meaning | Example |
 |----------|---------|---------|
 | `+model` | Model and all upstream dependencies | `dbt run --select +dim_customers` |
-| `model+` | Model and all downstream dependents | `dbt run --select stg_orders+` |
+| `model+` | Model and all downstream dependents | `dbt run --select stg_raw__orders+` |
 | `+model+` | Model and all connected models | `dbt run --select +fct_orders+` |
 | `@model` | Model, ancestors, and ancestor descendants | `dbt run --select @int_orders` |
 
