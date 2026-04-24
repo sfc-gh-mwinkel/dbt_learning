@@ -3,7 +3,7 @@
 {{
     config(
         target_database=target.database,
-        target_schema=target.schema ~ '_snapshots',
+        target_schema=generate_schema_name('snapshots'),
         unique_key='order_id',
         strategy='check',
         check_cols=['status', 'amount']

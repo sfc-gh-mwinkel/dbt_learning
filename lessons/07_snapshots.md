@@ -65,10 +65,10 @@ Monitors specific columns for changes. If any watched column changes, a new snap
 {{
     config(
         -- target_database/schema: where the snapshot table is created.
-        -- Using target.schema ~ '_snapshots' keeps snapshot tables in a
-        -- dedicated schema, separate from your models.
+        -- generate_schema_name('snapshots') produces a user-prefixed schema
+        -- (e.g. MWINKEL_SNAPSHOTS) consistent with the rest of the project.
         target_database=target.database,
-        target_schema=target.schema ~ '_snapshots',
+        target_schema=generate_schema_name('snapshots'),
 
         -- unique_key: the primary key of the source table. dbt uses this
         -- to match rows between runs and detect changes.
@@ -102,7 +102,7 @@ Uses an `updated_at` column to detect changes. More efficient than `check` becau
 {{
     config(
         target_database=target.database,
-        target_schema=target.schema ~ '_snapshots',
+        target_schema=generate_schema_name('snapshots'),
         unique_key='customer_id',
 
         -- strategy='timestamp': instead of comparing column values, dbt checks
@@ -130,7 +130,7 @@ select * from {{ source('raw', 'customers') }}
 | `strategy` | How to detect changes | `'check'` or `'timestamp'` |
 | `check_cols` | Columns to monitor (check strategy) | `['status', 'amount']` |
 | `updated_at` | Timestamp column (timestamp strategy) | `'updated_at'` |
-| `target_schema` | Where to store snapshot table | `target.schema ~ '_snapshots'` |
+| `target_schema` | Where to store snapshot table | `generate_schema_name('snapshots')` |
 | `target_database` | Database for snapshot table | `target.database` |
 
 ---
@@ -145,7 +145,7 @@ Create `snapshots/snap_orders.sql`:
 {{
     config(
         target_database=target.database,
-        target_schema=target.schema ~ '_snapshots',
+        target_schema=generate_schema_name('snapshots'),
         unique_key='order_id',
         strategy='check',
         check_cols=['status', 'amount']
