@@ -70,7 +70,7 @@ case $LESSON in
         check_seed "customers.csv" "customers.csv seed file" || all_checks_passed=false
         check_seed "orders.csv" "orders.csv seed file" || all_checks_passed=false
         check_file "models/staging/sources.yml" "sources.yml configuration" || all_checks_passed=false
-        check_model "staging/stg_customers.sql" "stg_customers model" || all_checks_passed=false
+        check_model "staging/stg_raw__customers.sql" "stg_raw__customers model" || all_checks_passed=false
         ;;
         
     2)
@@ -78,8 +78,8 @@ case $LESSON in
         echo "=================================="
         check_file "models/staging/sources.yml" "sources.yml with tests" || all_checks_passed=false
         check_file "models/staging/schema.yml" "schema.yml for staging models" || all_checks_passed=false
-        check_model "staging/stg_customers.sql" "stg_customers model" || all_checks_passed=false
-        check_model "staging/stg_orders.sql" "stg_orders model" || all_checks_passed=false
+        check_model "staging/stg_raw__customers.sql" "stg_raw__customers model" || all_checks_passed=false
+        check_model "staging/stg_raw__orders.sql" "stg_raw__orders model" || all_checks_passed=false
         ;;
         
     3)
@@ -90,22 +90,22 @@ case $LESSON in
         check_seed "products.csv" "products.csv" || all_checks_passed=false
         check_seed "order_items.csv" "order_items.csv" || all_checks_passed=false
         check_seed "payments.csv" "payments.csv" || all_checks_passed=false
-        check_model "staging/stg_customers.sql" "stg_customers" || all_checks_passed=false
-        check_model "staging/stg_orders.sql" "stg_orders" || all_checks_passed=false
-        check_model "staging/stg_products.sql" "stg_products" || all_checks_passed=false
-        check_model "staging/stg_order_items.sql" "stg_order_items" || all_checks_passed=false
-        check_model "staging/stg_payments.sql" "stg_payments" || all_checks_passed=false
+        check_model "staging/stg_raw__customers.sql" "stg_raw__customers" || all_checks_passed=false
+        check_model "staging/stg_raw__orders.sql" "stg_raw__orders" || all_checks_passed=false
+        check_model "staging/stg_raw__products.sql" "stg_raw__products" || all_checks_passed=false
+        check_model "staging/stg_raw__order_items.sql" "stg_raw__order_items" || all_checks_passed=false
+        check_model "staging/stg_raw__payments.sql" "stg_raw__payments" || all_checks_passed=false
         ;;
         
     4)
         echo "Lesson 4: Intermediate & Mart Models"
         echo "====================================="
         # Check all staging models exist
-        check_model "staging/stg_customers.sql" "stg_customers" || all_checks_passed=false
-        check_model "staging/stg_orders.sql" "stg_orders" || all_checks_passed=false
-        check_model "staging/stg_products.sql" "stg_products" || all_checks_passed=false
-        check_model "staging/stg_order_items.sql" "stg_order_items" || all_checks_passed=false
-        check_model "staging/stg_payments.sql" "stg_payments" || all_checks_passed=false
+        check_model "staging/stg_raw__customers.sql" "stg_raw__customers" || all_checks_passed=false
+        check_model "staging/stg_raw__orders.sql" "stg_raw__orders" || all_checks_passed=false
+        check_model "staging/stg_raw__products.sql" "stg_raw__products" || all_checks_passed=false
+        check_model "staging/stg_raw__order_items.sql" "stg_raw__order_items" || all_checks_passed=false
+        check_model "staging/stg_raw__payments.sql" "stg_raw__payments" || all_checks_passed=false
         # Check intermediate models
         check_model "intermediate/int_orders_with_payments.sql" "int_orders_with_payments" || all_checks_passed=false
         check_model "intermediate/int_order_items_with_products.sql" "int_order_items_with_products" || all_checks_passed=false

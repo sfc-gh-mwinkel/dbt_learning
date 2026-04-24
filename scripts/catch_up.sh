@@ -41,7 +41,7 @@ case $LESSON in
         echo "Next steps:"
         echo "1. Run: dbt seed"
         echo "2. Create models/staging/sources.yml (follow lesson instructions)"
-        echo "3. Create models/staging/stg_customers.sql (follow lesson instructions)"
+        echo "3. Create models/staging/stg_raw__customers.sql (follow lesson instructions)"
         ;;
         
     2)
@@ -50,14 +50,14 @@ case $LESSON in
         # Lesson 1 prereqs
         copy_if_missing "assets/seeds/customers.csv" "seeds/customers.csv" "customers.csv"
         copy_if_missing "assets/seeds/orders.csv" "seeds/orders.csv" "orders.csv"
-        copy_if_missing "assets/models/staging/stg_customers.sql" "models/staging/stg_customers.sql" "stg_customers.sql"
-        copy_if_missing "assets/models/staging/stg_orders.sql" "models/staging/stg_orders.sql" "stg_orders.sql"
+        copy_if_missing "assets/models/staging/stg_raw__customers.sql" "models/staging/stg_raw__customers.sql" "stg_raw__customers.sql"
+        copy_if_missing "assets/models/staging/stg_raw__orders.sql" "models/staging/stg_raw__orders.sql" "stg_raw__orders.sql"
         copy_if_missing "assets/yml_templates/sources.yml" "models/staging/sources.yml" "sources.yml"
         echo ""
         echo "Next steps:"
         echo "1. Run: dbt seed"
         echo "2. Run: dbt run --select staging"
-        echo "3. Create stg_customers.yml and stg_orders.yml (follow lesson instructions)"
+        echo "3. Create stg_raw__customers.yml and stg_raw__orders.yml (follow lesson instructions)"
         ;;
         
     3)
@@ -70,18 +70,18 @@ case $LESSON in
         copy_if_missing "assets/seeds/order_items.csv" "seeds/order_items.csv" "order_items.csv"
         copy_if_missing "assets/seeds/payments.csv" "seeds/payments.csv" "payments.csv"
         # Copy all staging models
-        copy_if_missing "assets/models/staging/stg_customers.sql" "models/staging/stg_customers.sql" "stg_customers.sql"
-        copy_if_missing "assets/models/staging/stg_orders.sql" "models/staging/stg_orders.sql" "stg_orders.sql"
-        copy_if_missing "assets/models/staging/stg_products.sql" "models/staging/stg_products.sql" "stg_products.sql"
-        copy_if_missing "assets/models/staging/stg_order_items.sql" "models/staging/stg_order_items.sql" "stg_order_items.sql"
-        copy_if_missing "assets/models/staging/stg_payments.sql" "models/staging/stg_payments.sql" "stg_payments.sql"
+        copy_if_missing "assets/models/staging/stg_raw__customers.sql" "models/staging/stg_raw__customers.sql" "stg_raw__customers.sql"
+        copy_if_missing "assets/models/staging/stg_raw__orders.sql" "models/staging/stg_raw__orders.sql" "stg_raw__orders.sql"
+        copy_if_missing "assets/models/staging/stg_raw__products.sql" "models/staging/stg_raw__products.sql" "stg_raw__products.sql"
+        copy_if_missing "assets/models/staging/stg_raw__order_items.sql" "models/staging/stg_raw__order_items.sql" "stg_raw__order_items.sql"
+        copy_if_missing "assets/models/staging/stg_raw__payments.sql" "models/staging/stg_raw__payments.sql" "stg_raw__payments.sql"
         copy_if_missing "assets/yml_templates/sources.yml" "models/staging/sources.yml" "sources.yml"
         # Copy staging yml files (1:1 pattern)
-        copy_if_missing "assets/yml_templates/staging/stg_customers.yml" "models/staging/stg_customers.yml" "stg_customers.yml"
-        copy_if_missing "assets/yml_templates/staging/stg_orders.yml" "models/staging/stg_orders.yml" "stg_orders.yml"
-        copy_if_missing "assets/yml_templates/staging/stg_products.yml" "models/staging/stg_products.yml" "stg_products.yml"
-        copy_if_missing "assets/yml_templates/staging/stg_order_items.yml" "models/staging/stg_order_items.yml" "stg_order_items.yml"
-        copy_if_missing "assets/yml_templates/staging/stg_payments.yml" "models/staging/stg_payments.yml" "stg_payments.yml"
+        copy_if_missing "assets/yml_templates/staging/stg_raw__customers.yml" "models/staging/stg_raw__customers.yml" "stg_raw__customers.yml"
+        copy_if_missing "assets/yml_templates/staging/stg_raw__orders.yml" "models/staging/stg_raw__orders.yml" "stg_raw__orders.yml"
+        copy_if_missing "assets/yml_templates/staging/stg_raw__products.yml" "models/staging/stg_raw__products.yml" "stg_raw__products.yml"
+        copy_if_missing "assets/yml_templates/staging/stg_raw__order_items.yml" "models/staging/stg_raw__order_items.yml" "stg_raw__order_items.yml"
+        copy_if_missing "assets/yml_templates/staging/stg_raw__payments.yml" "models/staging/stg_raw__payments.yml" "stg_raw__payments.yml"
         echo ""
         echo "Next steps:"
         echo "1. Run: dbt seed"
@@ -98,13 +98,13 @@ case $LESSON in
         copy_if_missing "assets/seeds/products.csv" "seeds/products.csv" "products.csv"
         copy_if_missing "assets/seeds/order_items.csv" "seeds/order_items.csv" "order_items.csv"
         copy_if_missing "assets/seeds/payments.csv" "seeds/payments.csv" "payments.csv"
-        copy_if_missing "assets/models/staging/stg_customers.sql" "models/staging/stg_customers.sql" "stg_customers.sql"
-        copy_if_missing "assets/models/staging/stg_orders.sql" "models/staging/stg_orders.sql" "stg_orders.sql"
-        copy_if_missing "assets/models/staging/stg_products.sql" "models/staging/stg_products.sql" "stg_products.sql"
-        copy_if_missing "assets/models/staging/stg_order_items.sql" "models/staging/stg_order_items.sql" "stg_order_items.sql"
-        copy_if_missing "assets/models/staging/stg_payments.sql" "models/staging/stg_payments.sql" "stg_payments.sql"
+        copy_if_missing "assets/models/staging/stg_raw__customers.sql" "models/staging/stg_raw__customers.sql" "stg_raw__customers.sql"
+        copy_if_missing "assets/models/staging/stg_raw__orders.sql" "models/staging/stg_raw__orders.sql" "stg_raw__orders.sql"
+        copy_if_missing "assets/models/staging/stg_raw__products.sql" "models/staging/stg_raw__products.sql" "stg_raw__products.sql"
+        copy_if_missing "assets/models/staging/stg_raw__order_items.sql" "models/staging/stg_raw__order_items.sql" "stg_raw__order_items.sql"
+        copy_if_missing "assets/models/staging/stg_raw__payments.sql" "models/staging/stg_raw__payments.sql" "stg_raw__payments.sql"
         copy_if_missing "assets/yml_templates/sources.yml" "models/staging/sources.yml" "sources.yml"
-        # Lesson 4 - intermediate models
+        # Lesson 4 - intermediate
         copy_if_missing "assets/models/intermediate/int_orders_with_payments.sql" "models/intermediate/int_orders_with_payments.sql" "int_orders_with_payments.sql"
         copy_if_missing "assets/models/intermediate/int_order_items_with_products.sql" "models/intermediate/int_order_items_with_products.sql" "int_order_items_with_products.sql"
         copy_if_missing "assets/models/intermediate/int_customers__order_summary.sql" "models/intermediate/int_customers__order_summary.sql" "int_customers__order_summary.sql"

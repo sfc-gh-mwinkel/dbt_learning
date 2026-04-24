@@ -68,15 +68,15 @@ switch ([int]$Lesson) {
         Check-Seed "customers.csv" "customers.csv seed file" | Out-Null
         Check-Seed "orders.csv" "orders.csv seed file" | Out-Null
         Check-File "models\staging\sources.yml" "sources.yml configuration" | Out-Null
-        Check-Model "staging\stg_customers.sql" "stg_customers model" | Out-Null
+        Check-Model "staging\stg_raw__customers.sql" "stg_raw__customers model" | Out-Null
     }
     2 {
         Write-Host "Lesson 2: Understanding YML Files"
         Write-Host "=================================="
         Check-File "models\staging\sources.yml" "sources.yml with tests" | Out-Null
         Check-File "models\staging\schema.yml" "schema.yml for staging models" | Out-Null
-        Check-Model "staging\stg_customers.sql" "stg_customers model" | Out-Null
-        Check-Model "staging\stg_orders.sql" "stg_orders model" | Out-Null
+        Check-Model "staging\stg_raw__customers.sql" "stg_raw__customers model" | Out-Null
+        Check-Model "staging\stg_raw__orders.sql" "stg_raw__orders model" | Out-Null
     }
     3 {
         Write-Host "Lesson 3: The Staging Layer"
@@ -86,20 +86,20 @@ switch ([int]$Lesson) {
         Check-Seed "products.csv" "products.csv" | Out-Null
         Check-Seed "order_items.csv" "order_items.csv" | Out-Null
         Check-Seed "payments.csv" "payments.csv" | Out-Null
-        Check-Model "staging\stg_customers.sql" "stg_customers" | Out-Null
-        Check-Model "staging\stg_orders.sql" "stg_orders" | Out-Null
-        Check-Model "staging\stg_products.sql" "stg_products" | Out-Null
-        Check-Model "staging\stg_order_items.sql" "stg_order_items" | Out-Null
-        Check-Model "staging\stg_payments.sql" "stg_payments" | Out-Null
+        Check-Model "staging\stg_raw__customers.sql" "stg_raw__customers" | Out-Null
+        Check-Model "staging\stg_raw__orders.sql" "stg_raw__orders" | Out-Null
+        Check-Model "staging\stg_raw__products.sql" "stg_raw__products" | Out-Null
+        Check-Model "staging\stg_raw__order_items.sql" "stg_raw__order_items" | Out-Null
+        Check-Model "staging\stg_raw__payments.sql" "stg_raw__payments" | Out-Null
     }
     4 {
         Write-Host "Lesson 4: Intermediate & Mart Models"
         Write-Host "====================================="
-        Check-Model "staging\stg_customers.sql" "stg_customers" | Out-Null
-        Check-Model "staging\stg_orders.sql" "stg_orders" | Out-Null
-        Check-Model "staging\stg_products.sql" "stg_products" | Out-Null
-        Check-Model "staging\stg_order_items.sql" "stg_order_items" | Out-Null
-        Check-Model "staging\stg_payments.sql" "stg_payments" | Out-Null
+        Check-Model "staging\stg_raw__customers.sql" "stg_raw__customers" | Out-Null
+        Check-Model "staging\stg_raw__orders.sql" "stg_raw__orders" | Out-Null
+        Check-Model "staging\stg_raw__products.sql" "stg_raw__products" | Out-Null
+        Check-Model "staging\stg_raw__order_items.sql" "stg_raw__order_items" | Out-Null
+        Check-Model "staging\stg_raw__payments.sql" "stg_raw__payments" | Out-Null
         Check-Model "intermediate\int_orders_with_payments.sql" "int_orders_with_payments" | Out-Null
         Check-Model "intermediate\int_order_items_with_products.sql" "int_order_items_with_products" | Out-Null
         Check-Model "intermediate\int_customers__order_summary.sql" "int_customers__order_summary" | Out-Null
