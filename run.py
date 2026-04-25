@@ -347,6 +347,14 @@ PREREQS = {
         "models": ["marts/dim_customers.sql", "marts/fct_orders.sql"],
     },
     10: {"models": ["marts/dim_customers.sql", "marts/fct_orders.sql"]},
+    11: {
+        "files": ["packages.yml"],
+        "models": ["marts/dim_customers.sql", "marts/fct_orders.sql"],
+    },
+    12: {
+        "models": ["marts/dim_customers.sql", "marts/fct_orders.sql",
+                   "marts/fct_orders_incremental.sql"],
+    },
 }
 
 def check_prerequisites(lesson: int, interactive=True):

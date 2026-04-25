@@ -4,7 +4,7 @@ $ErrorActionPreference = "Stop"
 
 $Lesson = $args[0]
 if (-not $Lesson) {
-    Write-Host "Usage: .\scripts\check_lesson_prerequisites.ps1 <1-10>" -ForegroundColor Yellow
+    Write-Host "Usage: .\scripts\check_lesson_prerequisites.ps1 <1-12>" -ForegroundColor Yellow
     exit 1
 }
 
@@ -143,9 +143,23 @@ switch ([int]$Lesson) {
         Check-Model "marts\dim_customers.sql" "dim_customers" | Out-Null
         Check-Model "marts\fct_orders.sql" "fct_orders" | Out-Null
     }
+    11 {
+        Write-Host "Lesson 11: dbt_constraints (Enterprise Data Quality)"
+        Write-Host "====================================================="
+        Check-File "packages.yml" "packages.yml with dbt_constraints" | Out-Null
+        Check-Model "marts\dim_customers.sql" "dim_customers" | Out-Null
+        Check-Model "marts\fct_orders.sql" "fct_orders" | Out-Null
+    }
+    12 {
+        Write-Host "Lesson 12: Production Patterns"
+        Write-Host "==============================="
+        Check-Model "marts\dim_customers.sql" "dim_customers" | Out-Null
+        Check-Model "marts\fct_orders.sql" "fct_orders" | Out-Null
+        Check-Model "marts\fct_orders_incremental.sql" "fct_orders_incremental" | Out-Null
+    }
     default {
         Write-Host "Invalid lesson number: $Lesson" -ForegroundColor Red
-        Write-Host "Usage: .\scripts\check_lesson_prerequisites.ps1 <1-10>"
+        Write-Host "Usage: .\scripts\check_lesson_prerequisites.ps1 <1-12>"
         exit 1
     }
 }

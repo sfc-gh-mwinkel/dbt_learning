@@ -187,7 +187,10 @@ chmod +x cleanup_snowflake.sh
 bash cleanup_snowflake.sh [connection_name]
 ```
 
-> **Note:** There is no PowerShell equivalent for `cleanup_snowflake.sh` — use Git Bash or WSL.
+**Windows (PowerShell):**
+```powershell
+.\cleanup_snowflake.ps1 [connection_name]
+```
 
 ---
 
@@ -221,8 +224,8 @@ dbt deps
 # 1. Clean local workspace
 .\cleanup_workspace.ps1
 
-# 2. Clean Snowflake artifacts (use Git Bash or WSL)
-bash cleanup_snowflake.sh
+# 2. Clean Snowflake artifacts
+.\cleanup_snowflake.ps1
 
 # 3. Copy seed files for testing
 Copy-Item assets\seeds\orders_broken.csv seeds\orders.csv

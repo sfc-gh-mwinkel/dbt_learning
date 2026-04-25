@@ -158,10 +158,26 @@ case $LESSON in
         check_model "marts/dim_customers.sql" "dim_customers" || all_checks_passed=false
         check_model "marts/fct_orders.sql" "fct_orders" || all_checks_passed=false
         ;;
-        
+
+    11)
+        echo "Lesson 11: dbt_constraints (Enterprise Data Quality)"
+        echo "====================================================="
+        check_file "packages.yml" "packages.yml with dbt_constraints" || all_checks_passed=false
+        check_model "marts/dim_customers.sql" "dim_customers" || all_checks_passed=false
+        check_model "marts/fct_orders.sql" "fct_orders" || all_checks_passed=false
+        ;;
+
+    12)
+        echo "Lesson 12: Production Patterns"
+        echo "==============================="
+        check_model "marts/dim_customers.sql" "dim_customers" || all_checks_passed=false
+        check_model "marts/fct_orders.sql" "fct_orders" || all_checks_passed=false
+        check_model "marts/fct_orders_incremental.sql" "fct_orders_incremental" || all_checks_passed=false
+        ;;
+
     *)
         echo -e "${RED}Invalid lesson number: $LESSON${NC}"
-        echo "Usage: ./scripts/check_lesson_prerequisites.sh <1-10>"
+        echo "Usage: ./scripts/check_lesson_prerequisites.sh <1-12>"
         exit 1
         ;;
 esac
