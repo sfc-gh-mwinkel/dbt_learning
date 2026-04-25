@@ -55,7 +55,7 @@ SCHEMAS=(
     "${PREFIX}_INTERMEDIATE"
     "${PREFIX}_MARTS"
     "${PREFIX}_DBT_TEST__AUDIT"
-    "public_snapshots"
+    "${PREFIX}_SNAPSHOTS"
 )
 
 for SCHEMA in "${SCHEMAS[@]}"; do

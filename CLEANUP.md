@@ -160,7 +160,7 @@ Drops all **Snowflake schemas** created by dbt, giving you a fresh start.
 - `<USER_PREFIX>_INTERMEDIATE` schema
 - `<USER_PREFIX>_MARTS` schema
 - `<USER_PREFIX>_DBT_TEST__AUDIT` schema
-- `public_snapshots` schema
+- `<USER_PREFIX>_SNAPSHOTS` schema
 
 ### What it preserves:
 - `DBT_LEARNING` database (you'll need it for future runs)

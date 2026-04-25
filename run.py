@@ -21,6 +21,7 @@ PROJECT_ROOT = Path(__file__).resolve().parent
 IGNORE_FILES = {
     ".gitkeep",
     "generate_schema_name.sql",
+    "get_user_prefix.sql",
     # --- Add client-specific files below ---
     # "client_masking_policy.sql",
 }

@@ -1,5 +1,6 @@
 name: 'dbt_learning'
 version: '1.0.0'
+require-dbt-version: ">=1.10.0,<1.11.0"
 
 profile: 'dbt_learning'
 
